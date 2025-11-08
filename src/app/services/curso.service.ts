@@ -12,6 +12,8 @@ export class CursoService {
   
   private apiUrl2 = 'http://localhost:8888/api/cursos/docente';
 
+   private apiUrl3 = 'http://localhost:8888/api/cursos';
+
   constructor(private http: HttpClient) {}
 
   /*
@@ -28,7 +30,7 @@ export class CursoService {
 }
 
   insertarCurso(curso: Curso): Observable<string> {
-    return this.http.post(this.apiUrl, curso, { responseType: 'text' });
+    return this.http.post(this.apiUrl3, curso, { responseType: 'text' });
   }
 
   actualizarCurso(id: number, curso: Curso): Observable<string> {

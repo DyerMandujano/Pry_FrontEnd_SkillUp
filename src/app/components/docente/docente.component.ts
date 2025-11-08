@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../models/curso.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router} from '@angular/router';
 
 
 @Component({
@@ -17,7 +17,8 @@ export class DocenteComponent{
    cursos: Curso[] = [];
 
   constructor(private cursoService: CursoService,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute,
+              private router: Router) {}
 
   ngOnInit(): void {
      this.idDocente = Number(this.route.snapshot.paramMap.get('id'));
@@ -25,4 +26,8 @@ export class DocenteComponent{
                       .subscribe(data => (this.cursos = data));
   }
 
+
+    navegarRegistrarCurso(): void {
+    this.router.navigate([`/docente/${this.idDocente}/registrar-curso`]);
+  }
 }

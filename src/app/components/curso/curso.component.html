@@ -1,24 +1,21 @@
-<h2>📚 Lista de Cursos</h2>
-
-<table border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Nivel</th>
-      <th>Duración</th>
-      <th>Estado</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let curso of cursos">
-      <td>{{ curso.idCurso }}</td>
-      <td>{{ curso.nombreCurso }}</td>
-      <td>{{ curso.nivel }}</td>
-      <td>{{ curso.duracionMin }} min</td>
-      <td>{{ curso.estado === 1 ? 'Activo' : 'Inactivo' }}</td>
-    </tr>
-  </tbody>
+<h1>LISTADO DE DOCENTES</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Id_docente</th>
+            <th>Nombre</th>
+            <th>ACCION</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let docente of docentesC">
+            <td>{{docente.idDocente}}</td>
+            <td>{{docente.nombres}}</td>
+            <td>
+                <button class="btn btn-warning" (click)="ingresarDocente(docente.idDocente)">
+          INGRESAR CON DOCENTE
+        </button>
+            </td>
+        </tr>
+    </tbody>
 </table>
-
-

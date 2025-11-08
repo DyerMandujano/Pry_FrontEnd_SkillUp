@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../models/curso.model';
+import { DocenteC } from '../../models/docenteC.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-curso',
@@ -12,18 +14,21 @@ import { Curso } from '../../models/curso.model';
 })
 
 export class CursoComponent implements OnInit {
-  cursos: Curso[] = [];
+  //cursos: Curso[] = [];
+  docentesC: DocenteC[] = [];
 
-  constructor(private cursoService: CursoService) {}
+  constructor(private cursoService: CursoService,private router: Router) {}
 
   ngOnInit(): void {
-    this.cargarCursos();
-  }
-
-  cargarCursos() {
-    this.cursoService.listarCursos().subscribe({
-      next: (data) => (this.cursos = data),
-      error: (err) => console.error('Error al cargar cursos', err)
+    this.cursoService.listarDocentes().subscribe(data => {
+      this.docentesC = data;
     });
   }
+
+  ingresarDocente(idDocente: number): void {
+    this.router.navigate(['/docente', idDocente]);
+  }
+
+
+
 }

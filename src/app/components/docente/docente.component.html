@@ -48,10 +48,14 @@
                   <td>{{curso.nombreCurso}}</td>
                   <td>{{curso.nivel}}</td>
                   <td>{{curso.fechaPublicacion}}</td>
-                  <td>{{curso.estado}}</td>
                   <td>
-                    <button class="btn btn-sm btn-warning">Actualizar</button>
-                    <button class="btn btn-sm btn-danger">Eliminar</button>
+                    <span class="badge" [ngClass]="curso.estado === 1 ? 'bg-success' : 'bg-danger'">
+                      {{ curso.estado === 1 ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-warning" (click)="navegarActualizarCurso(curso.idCurso)">Actualizar</button>
+                    <button class="btn btn-sm btn-danger" (click)="eliminarCurso(curso.idCurso)">Eliminar</button>
                   </td>
                 </tr>
               </tbody>

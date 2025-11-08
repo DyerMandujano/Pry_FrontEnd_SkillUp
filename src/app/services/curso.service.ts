@@ -27,17 +27,21 @@ export class CursoService {
 
   listarCursosPorDocente(idDocente: number): Observable<Curso[]> {
   return this.http.get<Curso[]>(`${this.apiUrl2}/${idDocente}`);
-}
+  }
+
+  obtenerCursoPorId(id: number): Observable<Curso> {
+    return this.http.get<Curso>(`${this.apiUrl3}/${id}`);
+  }
 
   insertarCurso(curso: Curso): Observable<string> {
     return this.http.post(this.apiUrl3, curso, { responseType: 'text' });
   }
 
   actualizarCurso(id: number, curso: Curso): Observable<string> {
-    return this.http.put(`${this.apiUrl}/${id}`, curso, { responseType: 'text' });
+    return this.http.put(`${this.apiUrl3}/${id}`, curso, { responseType: 'text' });
   }
 
   eliminarCurso(id: number): Observable<string> {
-    return this.http.delete(`${this.apiUrl}/${id}`, { responseType: 'text' });
+    return this.http.delete(`${this.apiUrl3}/${id}`, { responseType: 'text' });
   }
 }

@@ -30,4 +30,27 @@ export class DocenteComponent{
     navegarRegistrarCurso(): void {
     this.router.navigate([`/docente/${this.idDocente}/registrar-curso`]);
   }
+
+  navegarActualizarCurso(idCurso: number): void {
+    this.router.navigate(['/actualizar-curso', idCurso]);
+  }
+  
+eliminarCurso(idCurso: number): void {
+  if (confirm('¿Estás seguro de eliminar este curso?')) {
+    this.cursoService.eliminarCurso(idCurso).subscribe({
+      next: (respuesta) => {
+        alert('✅ Curso eliminado correctamente');
+        // Volvemos a cargar la lista actualizada
+        this.cursoService.listarCursosPorDocente(this.idDocente)
+            .subscribe(data => this.cursos = data);
+      },
+      error: (err) => {
+        console.error('Error al eliminar el curso:', err);
+        alert('❌ No se pudo eliminar el curso');
+      }
+    });
+  }
+}
+
+  
 }

@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 export class LeccionComponent implements OnInit{
 
   idSeccion!: number;
+  idCurso!: number;
+
 
   lecciones: Leccion[] = [];
 
@@ -25,6 +27,11 @@ export class LeccionComponent implements OnInit{
     this.idSeccion = Number(this.route.snapshot.paramMap.get('id'));
     console.log('ID seccion recibido:', this.idSeccion);    
     
+     const idCursoGuardado = localStorage.getItem('idCursoActual');
+    if (idCursoGuardado) {
+      this.idCurso = +idCursoGuardado;
+    }
+
     this.leccionService.listarLeccionesPorSeccion(this.idSeccion)
     .subscribe(data => (this.lecciones = data));
   }
@@ -37,6 +44,13 @@ export class LeccionComponent implements OnInit{
     this.router.navigate(['/actualizar-leccion', idLeccion]);
   }
 
+  volverASecciones(): void {
+    if (this.idCurso) {
+      this.router.navigate([`/seccion/curso/${this.idCurso}`]);
+    } else {
+      console.error('No se encontró el idCurso');
+    }
+  }
 
   eliminarLeccion(idLeccion: number): void {
   if (confirm('¿Estás seguro de eliminar esta Leccion?')) {

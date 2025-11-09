@@ -2,7 +2,7 @@
 <header class="p-3 bg-white shadow-sm">
   <div class="d-flex justify-content-center align-items-center gap-3">
     <h5 class="mb-0 fw-bold">BIENVENIDO DOCENTE, JOAQUIN VILLALOBOS</h5>
-    <img src="../I_Docente/img/iconoDocente.png" alt="Foto Perfil" 
+    <img src="img/docente/iconoDocente.png" alt="Foto Perfil" 
          class="rounded-circle border" width="50" height="50">
   </div>
 </header>
@@ -34,18 +34,18 @@
             </div>
             <div class="card-body">
                 <div class="text-center">
-        <img src="img/curso.png" width="200" height="200" class="img-fluid" alt="Imagen del curso">
+        <img src="img/curso/curso.png" width="200" height="200" class="img-fluid" alt="Imagen del curso">
       </div>
               <form class="row g-3" (ngSubmit)="registrarCurso()" #formCurso="ngForm">
 
-  <!-- ID del docente (solo lectura) -->
+  <!-- ID del docente (solo lectura) 
   <input type="number"
          class="form-control"
          id="iddocente"
          name="iddocente"
          [(ngModel)]="nuevoCurso.idDocente"
          readonly>
-
+-->
   <div class="col-md-6">
     <label class="form-label fw-semibold">Nombre del Curso</label>
     <input type="text" class="form-control"
@@ -117,7 +117,7 @@
     </div>
   </div>
 
-  <div class="col-12 text-end mt-3">
+  <div class="col-12 d-flex justify-content-end gap-3 mt-3">
     <button type="submit" class="btn btn-success px-4">Guardar Curso</button>
     <button type="reset" class="btn btn-secondary px-4">Limpiar</button>
   </div>

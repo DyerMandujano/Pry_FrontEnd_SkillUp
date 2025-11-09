@@ -49,7 +49,7 @@ export class SeccionComponent implements OnInit{
   }
 
   navegarLeccion(idSeccion: number) {
-
+    localStorage.setItem('idCursoActual', this.idCurso.toString());
     this.router.navigate(['/leccion/seccion', idSeccion]);
   }
 

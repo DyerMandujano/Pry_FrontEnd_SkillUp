@@ -34,16 +34,16 @@
             </div>
             <div class="card-body">
                 <div class="text-center">
-        <img src="img/curso.png" width="200" height="200" class="img-fluid" alt="Imagen del curso">
+        <img src="img/seccion/insertSeccion.png" width="200" height="200" class="img-fluid mb-3" alt="Imagen del curso">
       </div>
               <form class="row g-3" class="row g-3" (ngSubmit)="registrarSeccion()" #formLeccion="ngForm">
-
+ <!-- Cursos 
                 <input type="number"
                     class="form-control"
                     id="idseccion"
                     name="idseccion"
                     [(ngModel)]="nuevaLeccion.idSeccion"
-                    readonly>
+                    readonly>Dictados -->
 
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Nombre Leccion</label>
@@ -54,7 +54,7 @@
                    required>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold">Duración</label>
                     <input type="number" class="form-control"
                           name="duracion"
@@ -62,7 +62,7 @@
                           placeholder="en min..." required>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label fw-semibold">Orden Leccion</label>
                     <input type="number" class="form-control"
                           name="ordenLeccion"
@@ -86,7 +86,7 @@
                   required>
                 </div>
 
-                <div class="col-12 text-end mt-3">
+                <div class="col-12 d-flex justify-content-end gap-3 mt-3">
                   <button type="submit" class="btn btn-success px-4">Guardar Leccion</button>
                   <button type="reset" class="btn btn-secondary px-4">Limpiar</button>
                 </div>

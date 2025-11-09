@@ -2,7 +2,7 @@
 <header class="p-3 bg-white shadow-sm">
   <div class="d-flex justify-content-center align-items-center gap-3">
     <h5 class="mb-0 fw-bold">BIENVENIDO DOCENTE, JOAQUIN VILLALOBOS</h5>
-    <img src="../I_Docente/img/iconoDocente.png" alt="Foto Perfil" 
+    <img src="img/docente/iconoDocente.png" alt="Foto Perfil" 
          class="rounded-circle border" width="50" height="50">
   </div>
 </header>
@@ -54,9 +54,11 @@
                     </span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-warning" (click)="navegarActualizarCurso(curso.idCurso)">Actualizar</button>
-                    <button class="btn btn-sm btn-danger" (click)="eliminarCurso(curso.idCurso)">Eliminar</button>
-                    <button class="btn btn-sm btn-success" (click)="navegarSeccion(curso.idCurso)">Ingresar Sección</button>
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-warning" (click)="navegarActualizarCurso(curso.idCurso)">Actualizar</button>
+                      <button class="btn btn-danger" (click)="eliminarCurso(curso.idCurso)">Eliminar</button>
+                      <button class="btn btn-primary" (click)="navegarSeccion(curso.idCurso)">Ingresar Sección</button>
+                    </div>
                   </td>
                 </tr>
               </tbody>

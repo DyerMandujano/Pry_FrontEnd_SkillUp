@@ -30,51 +30,65 @@
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel" aria-labelledby="v-pills-cursos-tab">
           <div class="card shadow-sm border-0">
             <div class="card-header bg-primary text-white fw-bold text-center">
-              <h2><strong>Actualizar Seccion</strong></h2>
+              <h2><strong>Crear Nueva Leccion</strong></h2>
             </div>
             <div class="card-body">
                 <div class="text-center">
         <img src="img/curso.png" width="200" height="200" class="img-fluid" alt="Imagen del curso">
       </div>
-              <form class="row g-3" class="row g-3" (ngSubmit)="actualizarSeccion()" *ngIf="seccion.idSeccion">
+              <form class="row g-3" class="row g-3" (ngSubmit)="registrarSeccion()" #formLeccion="ngForm">
 
                 <input type="number"
-         class="form-control"
-         id="idcurso"
-         name="idcurso"
-         [(ngModel)]="seccion.idCurso"
-         readonly>
+                    class="form-control"
+                    id="idseccion"
+                    name="idseccion"
+                    [(ngModel)]="nuevaLeccion.idSeccion"
+                    readonly>
 
                 <div class="col-md-4">
-                  <label class="form-label fw-semibold">Nombre Seccion</label>
+                  <label class="form-label fw-semibold">Nombre Leccion</label>
+                  <input type="text" 
+                  class="form-control"
+                   name="nombreLeccion"
+                   [(ngModel)]="nuevaLeccion.nombreLeccion"
+                   required>
+                </div>
+                
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Duración</label>
+                    <input type="number" class="form-control"
+                          name="duracion"
+                          [(ngModel)]="nuevaLeccion.duracion"
+                          placeholder="en min..." required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Orden Leccion</label>
+                    <input type="number" class="form-control"
+                          name="ordenLeccion"
+                          [(ngModel)]="nuevaLeccion.ordenLeccion"
+                          placeholder="Ej: 2" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Material 1</label>
                   <input type="text" class="form-control" 
-                  name="nombreSeccion"
-                  [(ngModel)]="seccion.nombreSeccion"
+                  name="material1"
+                  [(ngModel)]="nuevaLeccion.material1"
                   required>
                 </div>
 
-
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Orden Seccion</label>
-                    <input type="number" class="form-control"
-                          name="ordenSeccion"
-                          [(ngModel)]="seccion.ordenSeccion"
-                          placeholder="Ej: 5" required>
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label fw-semibold">Estado</label>
-                  <select class="form-select"
-                          name="estado"
-                          [(ngModel)]="seccion.estado"
-                          required>
-                    <option [value]="1">Activo</option>
-                    <option [value]="0">Inactivo</option>
-                  </select>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Material 2</label>
+                  <input type="text" class="form-control" 
+                  name="material2"
+                  [(ngModel)]="nuevaLeccion.material2"
+                  required>
                 </div>
 
                 <div class="col-12 text-end mt-3">
-                  <button type="submit" class="btn btn-success px-4">Actualizar Seccion</button>
-                  <button type="reset" class="btn btn-secondary px-4">Cancelar</button>
+                  <button type="submit" class="btn btn-success px-4">Guardar Leccion</button>
+                  <button type="reset" class="btn btn-secondary px-4">Limpiar</button>
                 </div>
 
               </form>
@@ -96,4 +110,3 @@
     </main>
   </div>
 </div>
-

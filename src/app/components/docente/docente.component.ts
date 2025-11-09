@@ -36,6 +36,7 @@ export class DocenteComponent{
   }
 
   navegarSeccion(idCurso: number) {
+    localStorage.setItem('idDocente', this.idDocente.toString());
     this.router.navigate(['/seccion/curso', idCurso]);
   }
   

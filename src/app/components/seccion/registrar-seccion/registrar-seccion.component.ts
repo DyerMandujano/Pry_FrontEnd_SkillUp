@@ -28,7 +28,7 @@ export class RegistrarSeccionComponent implements OnInit {
 
 
     ngOnInit(): void {
-    // Obtener el id del docente desde la URL
+    // Obtener el id del curso desde la URL
     this.idCurso = Number(this.route.snapshot.paramMap.get('id'));
     this.nuevaSeccion.idCurso = this.idCurso;
     console.log('📘 Id curso recibido:', this.idCurso);
@@ -45,8 +45,8 @@ registrarSeccion() {
         this.router.navigate(['/seccion/curso', this.idCurso]);
       },
       error: (err) => {
-        console.error('Error al insertar curso:', err);
-        alert('❌ Error al registrar el curso.');
+        console.error('Error al insertar seccion:', err);
+        alert('❌ Error al registrar el seccion.');
       }
     });
   }

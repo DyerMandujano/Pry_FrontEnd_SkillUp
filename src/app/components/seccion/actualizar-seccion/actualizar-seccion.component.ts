@@ -30,9 +30,9 @@ export class ActualizarSeccionComponent implements OnInit{
 
   ngOnInit(): void {
     this.idSeccion = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('🟢 ID del curso recibido:', this.idSeccion);
+    console.log('🟢 ID de seccion recibido:', this.idSeccion);
 
-    // 🔹 Obtener curso por ID al cargar la página
+    // 🔹 Obtener seccion por ID al cargar la página
     this.seccionService.obtenerSeccionPorId(this.idSeccion).subscribe({
       next: (data) => {
         this.seccion = data;

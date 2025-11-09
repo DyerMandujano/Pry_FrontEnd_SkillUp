@@ -6,6 +6,9 @@ import { ActualizarCursoComponent } from './components/curso/actualizar-curso/ac
 import { SeccionComponent } from './components/seccion/seccion.component';
 import { RegistrarSeccionComponent } from './components/seccion/registrar-seccion/registrar-seccion.component';
 import { ActualizarSeccionComponent } from './components/seccion/actualizar-seccion/actualizar-seccion.component';
+import { LeccionComponent } from './components/leccion/leccion.component';
+import { RegistrarLeccionComponent } from './components/leccion/registrar-leccion/registrar-leccion.component';
+import { ActualizarLeccionComponent } from './components/leccion/actualizar-leccion/actualizar-leccion.component';
 
 export const routes: Routes = [
 
@@ -40,6 +43,10 @@ export const routes: Routes = [
 { path: 'curso/:id/registrar-seccion', component: RegistrarSeccionComponent },
 { path: 'actualizar-seccion/:id', component: ActualizarSeccionComponent },
 
+//LECCION
+{ path: 'leccion/seccion/:id', component: LeccionComponent },
+{ path: 'seccion/:id/registrar-leccion', component: RegistrarLeccionComponent },
+{ path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
 
 {
     path : '**',

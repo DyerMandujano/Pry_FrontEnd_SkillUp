@@ -27,12 +27,16 @@ export class DocenteComponent{
   }
 
 
-    navegarRegistrarCurso(): void {
+  navegarRegistrarCurso(): void {
     this.router.navigate([`/docente/${this.idDocente}/registrar-curso`]);
   }
 
   navegarActualizarCurso(idCurso: number): void {
     this.router.navigate(['/actualizar-curso', idCurso]);
+  }
+
+  navegarSeccion(idCurso: number) {
+    this.router.navigate(['/seccion/curso', idCurso]);
   }
   
 eliminarCurso(idCurso: number): void {
@@ -51,6 +55,5 @@ eliminarCurso(idCurso: number): void {
     });
   }
 }
-
   
 }

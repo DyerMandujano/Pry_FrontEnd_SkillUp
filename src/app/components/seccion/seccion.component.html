@@ -27,36 +27,44 @@
 
         <!-- Cursos Dictados -->
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel">
-          <h4 class="mb-4">📚 Cursos Dictados</h4>
-<button class="btn btn-primary mt-3" (click)="navegarRegistrarCurso()">➕ Ingresar nuevo curso</button>
+          <h4 class="mb-4">📚 Secciones del Curso</h4>
+          <button class="btn btn-primary mt-3" (click)="navegarRegistrarSeccion()">➕ Ingresar nueva seccion</button>
 
           <div class="table-responsive">
-            <table class="table table-striped align-middle">
+
+            <div *ngIf="secciones.length === 0" class="mt-3 alert alert-info text-center">
+              Actualmente el curso no cuenta con SECCIONES.
+            </div>
+
+
+            <table *ngIf="secciones.length > 0" class="table table-striped align-middle">
               <thead>
                 <tr>
-                  <th>Id Curso</th>
-                  <th>Nombre del Curso</th>
-                  <th>Nivel</th>
-                  <th>Fecha Publicación</th>
+                  <th>Id Seccion</th>
+                  <th>Nombre Seccion</th>
+                  <th>Orden Seccion</th>
                   <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let curso of cursos">
-                  <td>{{curso.idCurso}}</td>
-                  <td>{{curso.nombreCurso}}</td>
-                  <td>{{curso.nivel}}</td>
-                  <td>{{curso.fechaPublicacion}}</td>
+                <tr *ngFor="let seccion of secciones">
+                  <td>{{seccion.idSeccion}}</td>
+                  <td>{{seccion.nombreSeccion}}</td>
+                  <td>{{seccion.ordenSeccion}}</td>
                   <td>
-                    <span class="badge" [ngClass]="curso.estado === 1 ? 'bg-success' : 'bg-danger'">
-                      {{ curso.estado === 1 ? 'Activo' : 'Inactivo' }}
+                    <span class="badge" [ngClass]="seccion.estado === 1 ? 'bg-success' : 'bg-danger'">
+                      {{ seccion.estado === 1 ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-warning" (click)="navegarActualizarCurso(curso.idCurso)">Actualizar</button>
-                    <button class="btn btn-sm btn-danger" (click)="eliminarCurso(curso.idCurso)">Eliminar</button>
-                    <button class="btn btn-sm btn-success" (click)="navegarSeccion(curso.idCurso)">Ingresar Sección</button>
+                    <button class="btn btn-warning" (click)="navegarActualizarSeccion(seccion.idSeccion)">Actualizar</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" (click)="eliminarSeccion(seccion.idSeccion)">Eliminar</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-success">Ingresar Leccion</button>
                   </td>
                 </tr>
               </tbody>
@@ -223,5 +231,3 @@
     </main>
   </div>
 </div>
-
-

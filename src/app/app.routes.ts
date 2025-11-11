@@ -10,27 +10,26 @@ import { LeccionComponent } from './components/leccion/leccion.component';
 import { RegistrarLeccionComponent } from './components/leccion/registrar-leccion/registrar-leccion.component';
 import { ActualizarLeccionComponent } from './components/leccion/actualizar-leccion/actualizar-leccion.component';
 
-// 1. Importamos el nuevo componente
+// --- Tus imports ---
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
+import { EstudianteComponent } from './components/estudiante/estudiante.component';
+import { authGuard } from './guards/auth.guard'; 
 
 export const routes: Routes = [
 
 {
     path : '',
-    redirectTo: 'login', // <-- OJO: Más adelante quizás quieras cambiar esto a 'login'
+    redirectTo: 'login',
     pathMatch: 'full'
 },
-
-// 2. Añadimos las nuevas rutas
 {
     path: 'login',
     component: AutenticacionComponent
 },
 {
-    path: 'registro', // Para que funcione el hash del JSP que migramos
+    path: 'registro', 
     component: AutenticacionComponent
 },
-
 
 // --- TUS RUTAS EXISTENTES ---
 {
@@ -45,12 +44,52 @@ export const routes: Routes = [
     path : 'docente/:id',
     component: DocenteComponent
 },
-// ... (todas tus otras rutas)
+// (Aquí van todas tus otras rutas de docente/seccion/leccion)
 { path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
+{
+    path: 'docente/:id/registrar-curso',
+    component: RegistrarCursoComponent
+},
+{
+    path: 'seccion/curso/:id',
+    component: SeccionComponent
+},
+{
+    path: 'curso/:id/registrar-seccion',
+    component: RegistrarSeccionComponent
+},
+{
+    path: 'actualizar-seccion/:id',
+    component: ActualizarSeccionComponent
+},
+{
+    path: 'leccion/seccion/:id',
+    component: LeccionComponent
+},
+{
+    path: 'seccion/:id/registrar-leccion',
+    component: RegistrarLeccionComponent
+},
 
+
+// ================================================================
+// ¡CORRECCIÓN!
+// La ruta de estudiante debe ir ANTES del comodín '**'
+// ================================================================
+{
+    path: 'estudiante/dashboard',
+    component: EstudianteComponent,
+    canActivate: [authGuard] 
+},
+
+
+// ================================================================
+// ¡CORRECCIÓN!
+// El comodín (**) SIEMPRE debe ser la última ruta de la lista
+// ================================================================
 {
     path : '**',
-    redirectTo: ''
+    redirectTo: 'login' // Cambiado de '' a 'login' para más claridad
 }
 
 ];

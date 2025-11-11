@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core'; // 1. Importa Inject y PLATFORM_ID
-import { isPlatformBrowser, CommonModule } from '@angular/common'; // 2. Importa isPlatformBrowser
+import { Component, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core'; 
+import { isPlatformBrowser, CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -19,7 +19,6 @@ import { RegistroRequest } from '../../models/registro-request.model';
 })
 export class AutenticacionComponent implements AfterViewInit {
 
-  // ... (tus modelos loginData, registerData y variables de error quedan igual) ...
   loginData: LoginRequest = {
     username: '',
     contrasenia: ''
@@ -41,31 +40,50 @@ export class AutenticacionComponent implements AfterViewInit {
   registroError: string | null = null;
 
 
-  // 3. Inyecta el AuthService, el Router y AHORA el PLATFORM_ID
   constructor(
     private authService: AuthService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object // <-- ¡Añadido!
+    @Inject(PLATFORM_ID) private platformId: Object 
   ) { }
 
-  // ... (Tu función onLoginSubmit() queda exactamente igual) ...
+  
   onLoginSubmit() {
     this.loginError = null; 
     
     this.authService.login(this.loginData).subscribe(
       response => {
+
+
+        debugger;
         console.log('Login exitoso!', response);
         this.authService.saveSession(response);
-        this.router.navigate(['/cursos']);
+        
+        // ================================================================
+        // ¡ESTA ES LA CORRECCIÓN!
+        // Redirige según el rol del usuario
+        // ================================================================
+        if (response.rol === 'docente') {
+          // Si es docente, va al panel de docente con su ID
+          this.router.navigate(['/docente', response.idRolEspecifico]);
+        } else if (response.rol === 'estudiante') {
+          // Si es estudiante, va al nuevo dashboard
+          this.router.navigate(['/estudiante/dashboard']);
+        } else {
+          // Una ruta por defecto si no es ninguno (o es admin, etc.)
+          this.router.navigate(['/']);
+        }
+        // ================================================================
+
       },
       error => {
         console.error('Error en el login:', error);
+        //
         this.loginError = error.error?.message || 'Usuario o contraseña incorrectos.';
       }
     );
   }
 
-  // ... (Tu función onRegisterSubmit() queda exactamente igual) ...
+ 
   onRegisterSubmit() {
     this.registroError = null;
     this.registroExitoso = null;
@@ -116,9 +134,6 @@ export class AutenticacionComponent implements AfterViewInit {
   
   ngAfterViewInit(): void {
     
-    // 4. ¡LA SOLUCIÓN!
-    //    Este 'if' comprueba si estamos en el navegador.
-    //    Todo el código que usa 'document' o 'window' debe ir DENTRO de este 'if'.
     if (isPlatformBrowser(this.platformId)) {
       
       // --- CÓDIGO PARA LA ANIMACIÓN DEL PANEL ---

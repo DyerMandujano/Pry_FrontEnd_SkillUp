@@ -10,48 +10,47 @@ import { LeccionComponent } from './components/leccion/leccion.component';
 import { RegistrarLeccionComponent } from './components/leccion/registrar-leccion/registrar-leccion.component';
 import { ActualizarLeccionComponent } from './components/leccion/actualizar-leccion/actualizar-leccion.component';
 
+// 1. Importamos el nuevo componente
+import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
+
 export const routes: Routes = [
 
 {
-    path : '',
-    //CON EL redirectTo REDIRIGIMOS AL path que DESEAMOS
-    redirectTo: 'cursos',
-    pathMatch: 'full'
+    path : '',
+    redirectTo: 'login', // <-- OJO: Más adelante quizás quieras cambiar esto a 'login'
+    pathMatch: 'full'
 },
 
+// 2. Añadimos las nuevas rutas
 {
-    //El path nos permite ASIGNARLE EL COMPONENTE QUE SE DESEA MOSTRAR CON LA PROPIEDAD Component
-    path : 'cursos',
-    component:CursoComponent
+    path: 'login',
+    component: AutenticacionComponent
 },
-
 {
-    //El path nos permite ASIGNARLE EL COMPONENTE QUE SE DESEA MOSTRAR CON LA PROPIEDAD Component
-    path : 'actualizar-curso/:id',
-    component:ActualizarCursoComponent
+    path: 'registro', // Para que funcione el hash del JSP que migramos
+    component: AutenticacionComponent
 },
 
+
+// --- TUS RUTAS EXISTENTES ---
 {
-    path : 'docente/:id',
-    component: DocenteComponent
+    path : 'cursos',
+    component:CursoComponent
 },
-
-{ path: 'docente/:id/registrar-curso', component: RegistrarCursoComponent },
-
- //SECCION
-{ path: 'seccion/curso/:id', component: SeccionComponent },
-{ path: 'curso/:id/registrar-seccion', component: RegistrarSeccionComponent },
-{ path: 'actualizar-seccion/:id', component: ActualizarSeccionComponent },
-
-//LECCION
-{ path: 'leccion/seccion/:id', component: LeccionComponent },
-{ path: 'seccion/:id/registrar-leccion', component: RegistrarLeccionComponent },
+{
+    path : 'actualizar-curso/:id',
+    component:ActualizarCursoComponent
+},
+{
+    path : 'docente/:id',
+    component: DocenteComponent
+},
+// ... (todas tus otras rutas)
 { path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
 
 {
-    path : '**',
-    redirectTo: ''
+    path : '**',
+    redirectTo: ''
 }
-
 
 ];

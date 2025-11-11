@@ -8,7 +8,7 @@ import { DocenteC } from '../models/docenteC.model';
   providedIn: 'root'
 })
 export class CursoService {
-  private apiUrl = 'http://localhost:8888/api/docentess';
+  private apiUrl = 'http://localhost:8888/api/docentes';
   
   private apiUrl2 = 'http://localhost:8888/api/cursos/docente';
 

@@ -1,15 +1,10 @@
 /* --- Reemplaza todo tu CSS con esto --- */
-body {
-    font-family: 'Inter', sans-serif;
-    background: #e0f2fe; 
+:host {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
+    justify-content: center; /* Centra el contenido (contenedorPrincipal) horizontalmente */
+    align-items: center; /* Centra el contenido (contenedorPrincipal) verticalmente */
+    min-height: 100vh; /* Ocupa toda la altura visible para que el centrado vertical funcione */
+    width: 100%;
 }
 
 .contenedorPrincipal {

@@ -55,6 +55,7 @@ export class EstudianteComponent implements OnInit {
 
     if (this.currentUser) {
       this.loadProfileData(this.currentUser.idPersona);
+      console.log('ID de Persona que se usará para el perfil:', this.currentUser.idPersona);
       // this.loadCursos(); // Omitido
     } else {
       this.authService.logout();

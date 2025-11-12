@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   register(userData: RegistroRequest): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/registrar`, userData);
+    return this.http.post(`${this.BASE_URL}/registrar`, userData, { responseType: 'text' });
   }
 
   // --- MÉTODOS DE MANEJO DE SESIÓN ---

@@ -56,4 +56,8 @@ export class CursoService {
   eliminarCurso(id: number): Observable<string> {
     return this.http.delete(`${this.apiUrl3}/${id}`, { responseType: 'text' });
   }
+
+
+
 }
+

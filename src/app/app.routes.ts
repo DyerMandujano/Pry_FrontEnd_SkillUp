@@ -9,87 +9,99 @@ import { ActualizarSeccionComponent } from './components/seccion/actualizar-secc
 import { LeccionComponent } from './components/leccion/leccion.component';
 import { RegistrarLeccionComponent } from './components/leccion/registrar-leccion/registrar-leccion.component';
 import { ActualizarLeccionComponent } from './components/leccion/actualizar-leccion/actualizar-leccion.component';
+
+// --- Imports de AMBOS (tu compañero y tú) ---
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
-// Este import es nuevo, ¡asegúrate de que el archivo exista!
 import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
-import { authGuard } from './guards/auth.guard'; 
-import { HomeComponent } from './components/home/home.component';
+import { CursoDescripcionComponent } from './components/curso-descripcion/curso-descripcion.component'; 
+import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // Ruta principal
+  {
+    path: '',
+    redirectTo: 'visualizar-cursos/1',
+    pathMatch: 'full'
+  },
+  {
+    path: 'visualizar-cursos/:id',
+    component: VisualizarCursosComponent
+  },
 
-{
-    path : '',
-    component: HomeComponent 
-},
+  // TUS rutas nuevas
+  {
+    path: 'curso/:id',
+    component: CursoDescripcionComponent
+  },
+  {
+    path: 'curso/:id/lecciones',
+    component: CursoDetalleComponent
+  },
 
-// (El bloque de redirección que causaba el error se ha eliminado)
+  // Rutas de autenticación
+  {
+    path: 'login',
+    component: AutenticacionComponent
+  },
+  {
+    path: 'registro',
+    component: AutenticacionComponent
+  },
 
-// Esta es la ruta correcta para visualizar cursos
-  {
- path: 'visualizar-cursos/:id',
- component: VisualizarCursosComponent
-  },
+  // Rutas existentes de cursos
+  {
+    path: 'cursos',
+    component: CursoComponent
+  },
+  {
+    path: 'actualizar-curso/:id',
+    component: ActualizarCursoComponent
+  },
+  {
+    path: 'docente/:id',
+    component: DocenteComponent
+  },
+  { 
+    path: 'actualizar-leccion/:id', 
+    component: ActualizarLeccionComponent 
+  },
+  {
+    path: 'docente/:id/registrar-curso',
+    component: RegistrarCursoComponent
+  },
+  {
+    path: 'seccion/curso/:id',
+    component: SeccionComponent
+  },
+  {
+    path: 'curso/:id/registrar-seccion',
+    component: RegistrarSeccionComponent
+  },
+  {
+    path: 'actualizar-seccion/:id',
+    component: ActualizarSeccionComponent
+  },
+  {
+    path: 'leccion/seccion/:id',
+    component: LeccionComponent
+  },
+  {
+    path: 'seccion/:id/registrar-leccion',
+    component: RegistrarLeccionComponent
+  },
 
-{
- path: 'login',
- component: AutenticacionComponent
-},
-{
- path: 'registro', 
- component: AutenticacionComponent
-},
+  // Ruta del compañero
+  {
+    path: 'estudiante/dashboard',
+    component: EstudianteComponent,
+    canActivate: [authGuard]
+  },
 
-// --- TUS RUTAS EXISTENTES ---
-{
- path : 'cursos',
- component:CursoComponent
-},
-{
- path : 'actualizar-curso/:id',
- component:ActualizarCursoComponent
-},
-{
- path : 'docente/:id',
- component: DocenteComponent
-},
-{ path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
-{
- path: 'docente/:id/registrar-curso',
- component: RegistrarCursoComponent
-},
-{
- path: 'seccion/curso/:id',
- component: SeccionComponent
-},
-{
- path: 'curso/:id/registrar-seccion',
- component: RegistrarSeccionComponent
-},
-{
- path: 'actualizar-seccion/:id',
- component: ActualizarSeccionComponent
-},
-{
- path: 'leccion/seccion/:id',
- component: LeccionComponent
-},
-{
- path: 'seccion/:id/registrar-leccion',
- component: RegistrarLeccionComponent
-},
-
-// --- RUTA ESTUDIANTE ---
-{
- path: 'estudiante/dashboard',
- component: EstudianteComponent,
- canActivate: [authGuard] 
-},
-
-// --- RUTA COMODÍN (Wildcard) ---
-{
- path : '**',
- redirectTo: '' 
-}
-
-];
+  // Ruta comodín
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
+]

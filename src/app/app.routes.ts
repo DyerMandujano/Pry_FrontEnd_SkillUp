@@ -14,14 +14,20 @@ import { ActualizarLeccionComponent } from './components/leccion/actualizar-lecc
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { authGuard } from './guards/auth.guard'; 
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
 
 {
     path : '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    component: HomeComponent // <-- ¡Correcto! Esta es tu nueva página principal.
 },
+
+// {  <--- DEBES ELIMINAR ESTE BLOQUE
+//     redirectTo: 'login',
+//     pathMatch: 'full'
+// },
+
 {
     path: 'login',
     component: AutenticacionComponent
@@ -47,49 +53,42 @@ export const routes: Routes = [
 // (Aquí van todas tus otras rutas de docente/seccion/leccion)
 { path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
 {
-    path: 'docente/:id/registrar-curso',
-    component: RegistrarCursoComponent
+    path: 'docente/:id/registrar-curso',
+    component: RegistrarCursoComponent
 },
 {
-    path: 'seccion/curso/:id',
-    component: SeccionComponent
+    path: 'seccion/curso/:id',
+    component: SeccionComponent
 },
 {
-    path: 'curso/:id/registrar-seccion',
-    component: RegistrarSeccionComponent
+    path: 'curso/:id/registrar-seccion',
+    component: RegistrarSeccionComponent
 },
 {
-    path: 'actualizar-seccion/:id',
-    component: ActualizarSeccionComponent
+    path: 'actualizar-seccion/:id',
+    component: ActualizarSeccionComponent
 },
 {
-    path: 'leccion/seccion/:id',
-    component: LeccionComponent
+    path: 'leccion/seccion/:id',
+    component: LeccionComponent
 },
 {
-    path: 'seccion/:id/registrar-leccion',
-    component: RegistrarLeccionComponent
+    path: 'seccion/:id/registrar-leccion',
+    component: RegistrarLeccionComponent
 },
 
-
-// ================================================================
-// ¡CORRECCIÓN!
-// La ruta de estudiante debe ir ANTES del comodín '**'
-// ================================================================
+// --- RUTA ESTUDIANTE ---
 {
     path: 'estudiante/dashboard',
     component: EstudianteComponent,
     canActivate: [authGuard] 
 },
 
-
-// ================================================================
-// ¡CORRECCIÓN!
-// El comodín (**) SIEMPRE debe ser la última ruta de la lista
-// ================================================================
+// --- RUTA COMODÍN (Wildcard) ---
+// Es mejor que redirija a tu nueva página principal ('')
 {
     path : '**',
-    redirectTo: 'login' // Cambiado de '' a 'login' para más claridad
+    redirectTo: '' // <-- MODIFICADO (así cualquier ruta desconocida va a la Home)
 }
 
 ];

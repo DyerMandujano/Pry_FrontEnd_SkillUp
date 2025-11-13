@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Curso } from '../models/curso.model';
 import { DocenteC } from '../models/docenteC.model';
+import { CursoNoMatricula } from '../models/CursoNoMatricula';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class CursoService {
   private apiUrl2 = 'http://localhost:8888/api/cursos/docente';
 
    private apiUrl3 = 'http://localhost:8888/api/cursos';
+ private apiUrl4 = 'http://localhost:8888/api/cursos/no-matricula';
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +23,16 @@ export class CursoService {
     return this.http.get<Curso[]>(this.apiUrl2);
   }*/
  
+
+    listarCursos(): Observable<Curso[]> {
+    return this.http.get<Curso[]>(this.apiUrl3);
+  }
+
+  listarCursosSinMatriculaporEstu(id: number): Observable<CursoNoMatricula[]> {
+    return this.http.get<CursoNoMatricula[]>(`${this.apiUrl4}/${id}`);
+  }
+
+
   listarDocentes(): Observable<DocenteC[]> {
     return this.http.get<DocenteC[]>(this.apiUrl);
   }

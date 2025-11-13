@@ -14,82 +14,71 @@ import { ActualizarLeccionComponent } from './components/leccion/actualizar-lecc
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { authGuard } from './guards/auth.guard'; 
+import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
+
 
 export const routes: Routes = [
-
-{
-    path : '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-},
-{
-    path: 'login',
-    component: AutenticacionComponent
-},
-{
-    path: 'registro', 
-    component: AutenticacionComponent
-},
-
-// --- TUS RUTAS EXISTENTES ---
-{
-    path : 'cursos',
-    component:CursoComponent
-},
-{
-    path : 'actualizar-curso/:id',
-    component:ActualizarCursoComponent
-},
-{
-    path : 'docente/:id',
-    component: DocenteComponent
-},
-// (Aquí van todas tus otras rutas de docente/seccion/leccion)
-{ path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
-{
+  {
+    path: '',
+    redirectTo: 'visualizar-cursos/1',
+    pathMatch: 'full'
+  },
+  {
+    path: 'visualizar-cursos/:id',
+    component: VisualizarCursosComponent
+  },
+  {
+    path: 'login',
+    component: AutenticacionComponent
+  },
+  {
+    path: 'registro',
+    component: AutenticacionComponent
+  },
+  {
+    path: 'cursos',
+    component: CursoComponent
+  },
+  {
+    path: 'actualizar-curso/:id',
+    component: ActualizarCursoComponent
+  },
+  {
+    path: 'docente/:id',
+    component: DocenteComponent
+  },
+  { path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
+  {
     path: 'docente/:id/registrar-curso',
     component: RegistrarCursoComponent
-},
-{
+  },
+  {
     path: 'seccion/curso/:id',
     component: SeccionComponent
-},
-{
+  },
+  {
     path: 'curso/:id/registrar-seccion',
     component: RegistrarSeccionComponent
-},
-{
+  },
+  {
     path: 'actualizar-seccion/:id',
     component: ActualizarSeccionComponent
-},
-{
+  },
+  {
     path: 'leccion/seccion/:id',
     component: LeccionComponent
-},
-{
+  },
+  {
     path: 'seccion/:id/registrar-leccion',
     component: RegistrarLeccionComponent
-},
-
-
-// ================================================================
-// ¡CORRECCIÓN!
-// La ruta de estudiante debe ir ANTES del comodín '**'
-// ================================================================
-{
-    path: 'estudiante/dashboard',
-    component: EstudianteComponent,
-    canActivate: [authGuard] 
-},
-
-
-// ================================================================
-// ¡CORRECCIÓN!
-// El comodín (**) SIEMPRE debe ser la última ruta de la lista
-// ================================================================
-{
-    path : '**',
-    redirectTo: 'login' // Cambiado de '' a 'login' para más claridad
-}
-
+  },
+  {
+    path: 'estudiante/dashboard',
+    component: EstudianteComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];

@@ -67,7 +67,8 @@ export class AutenticacionComponent implements AfterViewInit {
           this.router.navigate(['/docente', response.idRolEspecifico]);
         } else if (response.rol === 'estudiante') {
           // Si es estudiante, va al nuevo dashboard
-          this.router.navigate(['/estudiante/dashboard']);
+          //this.router.navigate(['/estudiante/dashboard']);
+          this.router.navigate(['/visualizar-cursos', response.idRolEspecifico]);
         } else {
           // Una ruta por defecto si no es ninguno (o es admin, etc.)
           this.router.navigate(['/']);

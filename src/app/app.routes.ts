@@ -13,13 +13,13 @@ import { ActualizarLeccionComponent } from './components/leccion/actualizar-lecc
 // --- Imports de AMBOS (tu compañero y tú) ---
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
-import { authGuard } from './guards/auth.guard'; 
 import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
 import { CursoDescripcionComponent } from './components/curso-descripcion/curso-descripcion.component'; 
 import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  // Ruta principal - ELIGE UNA (decidamos por la del compañero por ahora)
+  // Ruta principal
   {
     path: '',
     redirectTo: 'visualizar-cursos/1',
@@ -104,4 +104,4 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'login'
   }
-];
+]

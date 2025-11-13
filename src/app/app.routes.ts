@@ -10,14 +10,16 @@ import { LeccionComponent } from './components/leccion/leccion.component';
 import { RegistrarLeccionComponent } from './components/leccion/registrar-leccion/registrar-leccion.component';
 import { ActualizarLeccionComponent } from './components/leccion/actualizar-leccion/actualizar-leccion.component';
 
-// --- Tus imports ---
+// --- Imports de AMBOS (tu compañero y tú) ---
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { authGuard } from './guards/auth.guard'; 
 import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
-
+import { CursoDescripcionComponent } from './components/curso-descripcion/curso-descripcion.component'; 
+import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
 
 export const routes: Routes = [
+  // Ruta principal - ELIGE UNA (decidamos por la del compañero por ahora)
   {
     path: '',
     redirectTo: 'visualizar-cursos/1',
@@ -27,6 +29,18 @@ export const routes: Routes = [
     path: 'visualizar-cursos/:id',
     component: VisualizarCursosComponent
   },
+
+  // TUS rutas nuevas
+  {
+    path: 'curso/:id',
+    component: CursoDescripcionComponent
+  },
+  {
+    path: 'curso/:id/lecciones',
+    component: CursoDetalleComponent
+  },
+
+  // Rutas de autenticación
   {
     path: 'login',
     component: AutenticacionComponent
@@ -35,6 +49,8 @@ export const routes: Routes = [
     path: 'registro',
     component: AutenticacionComponent
   },
+
+  // Rutas existentes de cursos
   {
     path: 'cursos',
     component: CursoComponent
@@ -47,7 +63,10 @@ export const routes: Routes = [
     path: 'docente/:id',
     component: DocenteComponent
   },
-  { path: 'actualizar-leccion/:id', component: ActualizarLeccionComponent },
+  { 
+    path: 'actualizar-leccion/:id', 
+    component: ActualizarLeccionComponent 
+  },
   {
     path: 'docente/:id/registrar-curso',
     component: RegistrarCursoComponent
@@ -72,11 +91,15 @@ export const routes: Routes = [
     path: 'seccion/:id/registrar-leccion',
     component: RegistrarLeccionComponent
   },
+
+  // Ruta del compañero
   {
     path: 'estudiante/dashboard',
     component: EstudianteComponent,
     canActivate: [authGuard]
   },
+
+  // Ruta comodín
   {
     path: '**',
     redirectTo: 'login'

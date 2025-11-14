@@ -14,30 +14,37 @@ import { ActualizarLeccionComponent } from './components/leccion/actualizar-lecc
 import { AutenticacionComponent } from './components/autenticacion/autenticacion.component';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { VisualizarCursosComponent } from './components/estudiante/visualizar-cursos/visualizar-cursos.component';
+// Asegúrate de que estos componentes existan (si te da error, verifica la ruta)
 import { CursoDescripcionComponent } from './components/curso-descripcion/curso-descripcion.component'; 
 import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
 import { authGuard } from './guards/auth.guard';
 
+// --- ¡IMPORTANTE! Importar el Home ---
+import { HomeComponent } from './components/home/home.component';
+
 export const routes: Routes = [
-  // Ruta principal
+  // 1. CORRECCIÓN: La ruta raíz carga el Home
   {
     path: '',
-    redirectTo: 'visualizar-cursos/1',
-    pathMatch: 'full'
-  },
-  {
-    path: 'visualizar-cursos/:id',
-    component: VisualizarCursosComponent
+    component: HomeComponent 
   },
 
-  // TUS rutas nuevas
+  // Rutas de visualización (Estudiante)
+  {
+    path: 'visualizar-cursos/:id',
+    component: VisualizarCursosComponent,
+    canActivate: [authGuard] // Recomendado protegerla
+  },
+
+  // Rutas de detalle de curso (Nuevas del merge)
   {
     path: 'curso/:id',
     component: CursoDescripcionComponent
   },
   {
     path: 'curso/:id/lecciones',
-    component: CursoDetalleComponent
+    component: CursoDetalleComponent,
+    canActivate: [authGuard] // Recomendado protegerla
   },
 
   // Rutas de autenticación
@@ -50,7 +57,7 @@ export const routes: Routes = [
     component: AutenticacionComponent
   },
 
-  // Rutas existentes de cursos
+  // --- Rutas de gestión (Docente) ---
   {
     path: 'cursos',
     component: CursoComponent
@@ -92,16 +99,16 @@ export const routes: Routes = [
     component: RegistrarLeccionComponent
   },
 
-  // Ruta del compañero
+  // Ruta antigua de estudiante (si aún la usas)
   {
     path: 'estudiante/dashboard',
     component: EstudianteComponent,
     canActivate: [authGuard]
   },
 
-  // Ruta comodín
+  // 2. CORRECCIÓN: Ruta comodín redirige a Home ('') en lugar de Login
   {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: ''
   }
-]
+];

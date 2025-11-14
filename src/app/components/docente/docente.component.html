@@ -1,7 +1,13 @@
-
 <header class="p-3 bg-white shadow-sm">
   <div class="d-flex justify-content-center align-items-center gap-3">
-    <h5 class="mb-0 fw-bold">BIENVENIDO DOCENTE, JOAQUIN VILLALOBOS</h5>
+    
+    <!-- 
+      ======================================================
+      ¡CAMBIO! - El nombre ahora es dinámico y usa la variable
+      ======================================================
+    -->
+    <h5 class="mb-0 fw-bold">BIENVENIDO DOCENTE, {{ nombreDelDocente | uppercase }}</h5>
+    
     <img src="img/docente/iconoDocente.png" alt="Foto Perfil" 
          class="rounded-circle border" width="50" height="50">
   </div>
@@ -28,7 +34,7 @@
         <!-- Cursos Dictados -->
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel">
           <h4 class="mb-4">📚 Cursos Dictados</h4>
-<button class="btn btn-primary mt-3" (click)="navegarRegistrarCurso()">➕ Ingresar nuevo curso</button>
+          <button class="btn btn-primary mt-3" (click)="navegarRegistrarCurso()">➕ Ingresar nuevo curso</button>
 
           <div class="table-responsive">
             <table class="table table-striped align-middle">
@@ -43,6 +49,17 @@
                 </tr>
               </thead>
               <tbody>
+                <!--
+                  AÑADIMOS UNA FILA "Plantilla" que se muestra
+                  si no hay cursos en la lista.
+                -->
+                <tr *ngIf="cursos.length === 0">
+                  <td colspan="6" class="text-center text-muted">
+                    Aún no has registrado ningún curso.
+                  </td>
+                </tr>
+
+                <!-- Tu *ngFor original se mantiene igual -->
                 <tr *ngFor="let curso of cursos">
                   <td>{{curso.idCurso}}</td>
                   <td>{{curso.nombreCurso}}</td>
@@ -55,9 +72,9 @@
                   </td>
                   <td>
                     <div class="d-flex gap-2">
-                      <button class="btn btn-warning" (click)="navegarActualizarCurso(curso.idCurso)">Actualizar</button>
-                      <button class="btn btn-danger" (click)="eliminarCurso(curso.idCurso)">Eliminar</button>
-                      <button class="btn btn-primary" (click)="navegarSeccion(curso.idCurso)">Ingresar Sección</button>
+                      <button class="btn btn-warning btn-sm" (click)="navegarActualizarCurso(curso.idCurso)">Actualizar</button>
+                      <button class="btn btn-danger btn-sm" (click)="eliminarCurso(curso.idCurso)">Eliminar</button>
+                      <button class="btn btn-primary btn-sm" (click)="navegarSeccion(curso.idCurso)">Secciones</button>
                     </div>
                   </td>
                 </tr>
@@ -113,117 +130,116 @@
         <!-- Rendimiento -->
         <div class="tab-pane fade" id="v-pills-rendimiento" role="tabpanel">
           <div class="container-fluid py-4">
-  <h3 class="fw-bold mb-3">Rendimiento</h3>
-  <p class="text-muted">Métricas y estadísticas de tu desempeño como instructor</p>
+            <h3 class="fw-bold mb-3">Rendimiento</h3>
+            <p class="text-muted">Métricas y estadísticas de tu desempeño como instructor</p>
 
-  <!-- Métricas principales -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3">👥</div>
-        <h4>490</h4>
-        <small>Estudiantes Totales</small>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3 star">⭐</div>
-        <h4>4.8</h4>
-        <small>Calificación Promedio</small>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3 text-success">🎓</div>
-        <h4>48</h4>
-        <small>Certificados Emitidos</small>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="metric-card">
-        <div class="fs-3 text-primary">👁️</div>
-        <h4>3500</h4>
-        <small>Visualizaciones Totales</small>
-      </div>
-    </div>
-  </div>
+            <!-- Métricas principales -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <div class="fs-3">👥</div>
+                  <h4>490</h4>
+                  <small>Estudiantes Totales</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <div class="fs-3 star">⭐</div>
+                  <h4>4.8</h4>
+                  <small>Calificación Promedio</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <div class="fs-3 text-success">🎓</div>
+                  <h4>48</h4>
+                  <small>Certificados Emitidos</small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="metric-card">
+                  <div class="fs-3 text-primary">👁️</div>
+                  <h4>3500</h4>
+                  <small>Visualizaciones Totales</small>
+                </div>
+              </div>
+            </div>
 
-  <!-- Rendimiento por curso y actividades recientes -->
-  <div class="row g-3">
-    <!-- Rendimiento por curso -->
-    <div class="col-md-7">
-      <div class="course-performance">
-        <h5 class="fw-bold mb-3">Rendimiento por Curso</h5>
-        
-        <div class="mb-4">
-          <p class="mb-1 fw-semibold">Gasfitería Básica: Instalación y Reparación de Tuberías</p>
-          <div class="d-flex justify-content-between small mb-1">
-            <span class="star">⭐ 4.8</span>
-            <span>245 estudiantes</span>
-            <span>👁️ 2000</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-dark" style="width: 80%"></div>
-          </div>
-        </div>
+            <!-- Rendimiento por curso y actividades recientes -->
+            <div class="row g-3">
+              <!-- Rendimiento por curso -->
+              <div class="col-md-7">
+                <div class="course-performance">
+                  <h5 class="fw-bold mb-3">Rendimiento por Curso</h5>
+                  
+                  <div class="mb-4">
+                    <p class="mb-1 fw-semibold">Gasfitería Básica: Instalación y Reparación de Tuberías</p>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="star">⭐ 4.8</span>
+                      <span>245 estudiantes</span>
+                      <span>👁️ 2000</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar bg-dark" style="width: 80%"></div>
+                    </div>
+                  </div>
 
-        <div class="mb-4">
-          <p class="mb-1 fw-semibold">Gasfitería Avanzada: Sistemas de Calefacción</p>
-          <div class="d-flex justify-content-between small mb-1">
-            <span class="star">⭐ 4.9</span>
-            <span>89 estudiantes</span>
-            <span>👁️ 500</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-dark" style="width: 60%"></div>
-          </div>
-        </div>
+                  <div class="mb-4">
+                    <p class="mb-1 fw-semibold">Gasfitería Avanzada: Sistemas de Calefacción</p>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="star">⭐ 4.9</span>
+                      <span>89 estudiantes</span>
+                      <span>👁️ 500</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar bg-dark" style="width: 60%"></div>
+                    </div>
+                  </div>
 
-        <div class="mb-2">
-          <p class="mb-1 fw-semibold">Reparación de Tuberías Especializadas</p>
-          <div class="d-flex justify-content-between small mb-1">
-            <span class="star">⭐ 4.7</span>
-            <span>156 estudiantes</span>
-            <span>👁️ 1000</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-dark" style="width: 70%"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+                  <div class="mb-2">
+                    <p class="mb-1 fw-semibold">Reparación de Tuberías Especializadas</p>
+                    <div class="d-flex justify-content-between small mb-1">
+                      <span class="star">⭐ 4.7</span>
+                      <span>156 estudiantes</span>
+                      <span>👁️ 1000</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar bg-dark" style="width: 70%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <!-- Actividades recientes -->
-    <div class="col-md-5">
-      <div class="activity-card">
-        <h5 class="fw-bold mb-3">Actividades Recientes</h5>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item px-0">
-            <strong>Ana Torres</strong> se inscribió en <em>Gasfitería Básica</em>  
-            <div class="text-muted small">hace 30 min</div>
-          </li>
-          <li class="list-group-item px-0">
-            <strong>Miguel Santos</strong> completó el módulo de soldadura  
-            <div class="text-muted small">hace 1 hora</div>
-          </li>
-          <li class="list-group-item px-0">
-            Nueva pregunta en <em>Gasfitería Avanzada</em>  
-            <div class="text-muted small">hace 2 horas</div>
-          </li>
-          <li class="list-group-item px-0">
-            <strong>Juan Pérez</strong> obtuvo certificado en <em>Gasfitería Básica</em>  
-            <div class="text-muted small">hace 4 horas</div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+              <!-- Actividades recientes -->
+              <div class="col-md-5">
+                <div class="activity-card">
+                  <h5 class="fw-bold mb-3">Actividades Recientes</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0">
+                      <strong>Ana Torres</strong> se inscribió en <em>Gasfitería Básica</em>  
+                      <div class="text-muted small">hace 30 min</div>
+                    </li>
+                    <li class="list-group-item px-0">
+                      <strong>Miguel Santos</strong> completó el módulo de soldadura  
+                      <div class="text-muted small">hace 1 hora</div>
+                    </li>
+                    <li class="list-group-item px-0">
+                      Nueva pregunta en <em>Gasfitería Avanzada</em>  
+                      <div class="text-muted small">hace 2 horas</div>
+                    </li>
+                    <li class="list-group-item px-0">
+                      <strong>Juan Pérez</strong> obtuvo certificado en <em>Gasfitería Básica</em>  
+                      <div class="text-muted small">hace 4 horas</div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
     </main>
   </div>
 </div>
-
 

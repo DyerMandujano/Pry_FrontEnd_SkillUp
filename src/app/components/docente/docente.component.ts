@@ -1,65 +1,142 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // CommonModule ya incluye *ngFor, [ngClass], etc.
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CursoService } from '../../services/curso.service';
 import { Curso } from '../../models/curso.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
-// 1. IMPORTA TU SERVICIO DE AUTENTICACIÓN
-// (Asegúrate de que esta ruta sea correcta)
-import { AuthService } from '../../services/auth.service'; 
+// 1. --- IMPORTACIONES ADICIONALES ---
+import { AuthService } from '../../services/auth.service';
+import { UsuarioService } from '../../services/usuario.service';
+import { LoginResponse } from '../../models/login-response.model';
+import { Persona } from '../../models/persona.model';
+import { FormsModule } from '@angular/forms'; // Asegúrate de importar FormsModule
 
+// 2. --- ACTUALIZAR METADATOS DEL COMPONENTE ---
 @Component({
   selector: 'app-docente',
-  standalone: true, // Asumo que es standalone por tu 'imports'
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Añadir FormsModule
   templateUrl: './docente.component.html',
   styleUrl: './docente.component.css'
 })
-export class DocenteComponent implements OnInit { // <-- 2. Implementa OnInit
+export class DocenteComponent implements OnInit { 
     
     idDocente!: number;
     cursos: Curso[] = [];
-    
-    // 3. AÑADE LA VARIABLE PARA EL NOMBRE
     nombreDelDocente: string = '';
+
+    // 3. --- PROPIEDADES NUEVAS (COPIADAS DE ESTUDIANTE) ---
+    currentUser: LoginResponse | null = null;
+    profileData: Persona | null = null;
+    successMessage: string | null = null;
+    errorMessage: string | null = null;
+    confirmUsername: string = ''; // Para el modal de eliminar
+    configModal: any; // Para manejar el modal de Bootstrap
 
   constructor(
     private cursoService: CursoService,
     private route: ActivatedRoute,
     private router: Router,
-    // 4. INYECTA EL SERVICIO DE AUTENTICACIÓN
-    private authService: AuthService 
+    // 4. --- INYECTAR NUEVOS SERVICIOS ---
+    private authService: AuthService,
+    private usuarioService: UsuarioService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    // Carga el nombre del docente desde la sesión
-    this.cargarDatosDeSesion(); 
+    // 5. --- OBTENER DATOS DEL USUARIO LOGUEADO ---
+    this.currentUser = this.authService.getCurrentUser();
+
+    if (this.currentUser) {
+      this.nombreDelDocente = this.currentUser.nombreCompleto;
+      // Cargar datos del perfil para el modal
+      this.loadProfileData(this.currentUser.idPersona);
+    } else {
+      // Si no hay sesión, no debería estar aquí
+      this.authService.logout();
+      this.router.navigate(['/login']);
+      return;
+    }
     
-    // Carga el ID del docente desde la URL (esto ya lo tenías)
+    // Carga el ID del docente desde la URL
     this.idDocente = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Carga los cursos (esto ya lo tenías)
+    // Carga los cursos
     if (this.idDocente) {
       this.cursoService.listarCursosPorDocente(this.idDocente)
           .subscribe(data => (this.cursos = data));
     }
-  }
 
-  // 5. AÑADE ESTA FUNCIÓN PARA CARGAR LOS DATOS DE SESIÓN
-  cargarDatosDeSesion(): void {
-    // Pide a tu servicio de Auth la sesión actual
-    const sesion = this.authService.getCurrentUser(); // O como se llame tu método
-
-    if (sesion && sesion.nombreCompleto) {
-      // Asigna el nombre de la sesión a tu variable
-      this.nombreDelDocente = sesion.nombreCompleto;
-    } else {
-      this.nombreDelDocente = 'Docente'; // Un valor por defecto
+    // 6. --- INICIALIZAR EL MODAL (COPIADO DE ESTUDIANTE) ---
+    if (isPlatformBrowser(this.platformId)) {
+      const modalElement = document.getElementById('configModal');
+      if (modalElement) {
+        // Debes tener Bootstrap JS cargado en tu index.html para que esto funcione
+        // @ts-ignore
+        this.configModal = new bootstrap.Modal(modalElement);
+      }
     }
   }
 
+  // 7. --- AÑADIR LOS SIGUIENTES MÉTODOS NUEVOS ---
 
-  // --- TUS MÉTODOS (SIN CAMBIOS) ---
+  loadProfileData(idPersona: number): void {
+    this.usuarioService.obtenerPerfil(idPersona).subscribe(
+      (data: Persona) => { 
+        this.profileData = data;
+        // Asegurarse de que la fecha tenga el formato YYYY-MM-DD para el input date
+        if (this.profileData && this.profileData.fechaDeNacimiento) {
+          this.profileData.fechaDeNacimiento = new Date(this.profileData.fechaDeNacimiento).toISOString().split('T')[0];
+        }
+      },
+      (err: any) => { 
+        this.errorMessage = 'Error al cargar los datos de tu perfil.';
+      }
+    );
+  }
+
+  onUpdateProfile(): void {
+    if (!this.profileData) return;
+
+    this.usuarioService.actualizarPerfil(this.profileData.idPersona, this.profileData).subscribe(
+      (response: string) => { 
+        this.successMessage = response; 
+        this.errorMessage = null;
+        if (this.configModal) {
+          this.configModal.hide(); 
+        }
+
+        // Actualizar el nombre en la sesión actual
+        if(this.currentUser) {
+            this.currentUser.nombreCompleto = `${this.profileData?.nombres} ${this.profileData?.apellidos}`;
+            this.authService.saveSession(this.currentUser); 
+            // Actualizar el nombre mostrado en el header
+            this.nombreDelDocente = this.currentUser.nombreCompleto;
+        }
+      },
+      (err: any) => { 
+        this.errorMessage = err.error?.message || 'Error al actualizar el perfil.';
+        this.successMessage = null;
+      }
+    );
+  }
+
+  onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/']); // Redirige a la Home al salir
+  }
+  
+  onDeleteAccount(): void {
+      if (this.confirmUsername !== this.currentUser?.username) {
+          this.errorMessage = "El nombre de usuario no coincide.";
+          return;
+      }
+      console.log("Enviando solicitud para eliminar cuenta...");
+      // Aquí iría la lógica para llamar al servicio de eliminación
+      alert('Funcionalidad de eliminar cuenta aún no conectada al backend.');
+  }
+
+  // --- TUS MÉTODOS ANTIGUOS (SIN CAMBIOS) ---
 
   navegarRegistrarCurso(): void {
     this.router.navigate([`/docente/${this.idDocente}/registrar-curso`]);
@@ -75,13 +152,10 @@ export class DocenteComponent implements OnInit { // <-- 2. Implementa OnInit
   }
   
   eliminarCurso(idCurso: number): void {
-    // (Mantengo tu lógica de confirm/alert, aunque en producción
-    // es mejor usar un modal personalizado)
     if (confirm('¿Estás seguro de eliminar este curso?')) {
       this.cursoService.eliminarCurso(idCurso).subscribe({
         next: (respuesta) => {
           alert('✅ Curso eliminado correctamente');
-          // Volvemos a cargar la lista actualizada
           this.cursoService.listarCursosPorDocente(this.idDocente)
               .subscribe(data => this.cursos = data);
         },
@@ -92,5 +166,4 @@ export class DocenteComponent implements OnInit { // <-- 2. Implementa OnInit
       });
     }
   }
-  
 }

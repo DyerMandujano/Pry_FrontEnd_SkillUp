@@ -1,23 +1,27 @@
 <header class="p-3 bg-white shadow-sm">
-  <div class="d-flex justify-content-center align-items-center gap-3">
-    
-    <!-- 
-      ======================================================
-      ¡CAMBIO! - El nombre ahora es dinámico y usa la variable
-      ======================================================
-    -->
-    <h5 class="mb-0 fw-bold">BIENVENIDO DOCENTE, {{ nombreDelDocente | uppercase }}</h5>
-    
-    <img src="img/docente/iconoDocente.png" alt="Foto Perfil" 
-         class="rounded-circle border" width="50" height="50">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <a class="navbar-brand fw-bold" routerLink="/">SkillUP</a>
+
+    <div class="d-flex align-items-center gap-3">
+      <h5 class="mb-0 fw-bold">BIENVENIDO DOCENTE, {{ nombreDelDocente | uppercase }}</h5>
+      <img src="img/docente/iconoDocente.png" alt="Foto Perfil" 
+           class="rounded-circle border" width="50" height="50">
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#configModal">
+        <i class="bi bi-gear-fill"></i> Configuración
+      </button>
+      <button (click)="onLogout()" class="btn btn-outline-danger ms-2">
+         <i class="bi bi-box-arrow-right"></i> Salir
+      </button>
+    </div>
   </div>
 </header>
 
-<!-- Layout principal -->
 <div class="container-fluid">
   <div class="row">
 
-    <!-- Sidebar -->
     <nav class="col-md-3 col-lg-2 sidebar d-md-block p-3">
       <h5 class="fw-bold mb-4">Panel Docente</h5>
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -27,11 +31,21 @@
       </div>
     </nav>
 
-    <!-- Contenido -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+      
+      <section class="container-fluid">
+        <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = null" aria-label="Close"></button>
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = null" aria-label="Close"></button>
+        </div>
+      </section>
+
       <div class="tab-content" id="v-pills-tabContent">
 
-        <!-- Cursos Dictados -->
         <div class="tab-pane fade show active" id="v-pills-cursos" role="tabpanel">
           <h4 class="mb-4">📚 Cursos Dictados</h4>
           <button class="btn btn-primary mt-3" (click)="navegarRegistrarCurso()">➕ Ingresar nuevo curso</button>
@@ -49,17 +63,11 @@
                 </tr>
               </thead>
               <tbody>
-                <!--
-                  AÑADIMOS UNA FILA "Plantilla" que se muestra
-                  si no hay cursos en la lista.
-                -->
                 <tr *ngIf="cursos.length === 0">
                   <td colspan="6" class="text-center text-muted">
                     Aún no has registrado ningún curso.
                   </td>
                 </tr>
-
-                <!-- Tu *ngFor original se mantiene igual -->
                 <tr *ngFor="let curso of cursos">
                   <td>{{curso.idCurso}}</td>
                   <td>{{curso.nombreCurso}}</td>
@@ -84,7 +92,6 @@
           
         </div>
 
-        <!-- Comunicación -->
         <div class="tab-pane fade" id="v-pills-comunicacion" role="tabpanel">
           <h4 class="mb-4">💬 Comunicación</h4>
           <div class="list-group">
@@ -127,13 +134,11 @@
           </div>
         </div>
 
-        <!-- Rendimiento -->
         <div class="tab-pane fade" id="v-pills-rendimiento" role="tabpanel">
           <div class="container-fluid py-4">
             <h3 class="fw-bold mb-3">Rendimiento</h3>
             <p class="text-muted">Métricas y estadísticas de tu desempeño como instructor</p>
 
-            <!-- Métricas principales -->
             <div class="row g-3 mb-4">
               <div class="col-md-3">
                 <div class="metric-card">
@@ -165,9 +170,7 @@
               </div>
             </div>
 
-            <!-- Rendimiento por curso y actividades recientes -->
             <div class="row g-3">
-              <!-- Rendimiento por curso -->
               <div class="col-md-7">
                 <div class="course-performance">
                   <h5 class="fw-bold mb-3">Rendimiento por Curso</h5>
@@ -210,7 +213,6 @@
                 </div>
               </div>
 
-              <!-- Actividades recientes -->
               <div class="col-md-5">
                 <div class="activity-card">
                   <h5 class="fw-bold mb-3">Actividades Recientes</h5>
@@ -240,6 +242,114 @@
 
       </div>
     </main>
+  </div>
+</div>
+
+
+<div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="configModalLabel">Configuración de la Cuenta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form *ngIf="profileData" (ngSubmit)="onUpdateProfile()">
+        <div class="modal-body">
+          <ul class="nav nav-tabs" id="configTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true">
+                <i class="bi bi-person-vcard"></i> Editar Perfil
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
+                <i class="bi bi-key"></i> Cambiar Contraseña
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="danger-tab" data-bs-toggle="tab" data-bs-target="#danger" type="button" role="tab" aria-controls="danger" aria-selected="false">
+                <i class="bi bi-exclamation-triangle"></i> Zona de Peligro
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content pt-3" id="configTabsContent">
+            <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
+              <h6 class="mb-3">Información Personal</h6>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="nombres" class="form-label">Nombres</label>
+                  <input type="text" class="form-control" id="nombres" name="nombres" [(ngModel)]="profileData.nombres" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="apellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control" id="apellidos" name="apellidos" [(ngModel)]="profileData.apellidos" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                  <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="profileData.fechaDeNacimiento">
+                </div>
+                <div class="col-md-6">
+                  <label for="genero" class="form-label">Género</label>
+                  <select id="genero" name="genero" class="form-select" [(ngModel)]="profileData.genero">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                    <option value="">Prefiero no decir</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+               <p class="text-muted small">Esta función requiere un endpoint en el backend (Próximo paso).</p>
+            </div>
+            
+            <div class="tab-pane fade" id="danger" role="tabpanel" aria-labelledby="danger-tab">
+                 <div class="p-3 border border-danger rounded">
+                    <h5 class="text-danger">Dar de baja la cuenta</h5>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                      Solicitar baja de mi cuenta
+                    </button>
+                 </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">¿Estás absolutamente seguro?</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form (ngSubmit)="onDeleteAccount()">
+          <div class="modal-body">
+            <p>Esta acción <strong>no se puede deshacer</strong>.</p>
+            <p>Para confirmar, escribe tu nombre de usuario (<strong>{{ currentUser?.username }}</strong>) abajo.</p>
+            <input type="text" class="form-control" name="confirmDeleteInput" 
+                   placeholder="Escribe tu nombre de usuario" 
+                   [(ngModel)]="confirmUsername" 
+                   autocomplete="off">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" 
+                    [disabled]="confirmUsername !== currentUser?.username">
+                Entiendo, dar de baja mi cuenta
+            </button>
+          </div>
+      </form>
+    </div>
   </div>
 </div>
 

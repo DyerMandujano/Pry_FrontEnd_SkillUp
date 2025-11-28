@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
 import { SeccionService } from '../../services/seccion.service';
 import { LeccionService } from '../../services/leccion.service';
@@ -31,6 +31,7 @@ export class CursoDetalleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private cursoService: CursoService,
     private seccionService: SeccionService,
     private leccionService: LeccionService
@@ -54,6 +55,23 @@ export class CursoDetalleComponent implements OnInit {
         this.cargando = false;
       }
     });
+  }
+
+    regresarCursos(): void {
+    const idEstudianteLS = localStorage.getItem('idEstudiante');
+
+    if (!idEstudianteLS) {
+      console.error("❌ No se encontró idEstudiante en el localStorage");
+      return;
+    }
+
+    const idEstudiante = +idEstudianteLS;
+
+    // Redirige a visualizar-cursos/:id
+    this.router.navigate([`/visualizar-cursos/${idEstudiante}`]);
+    // 🔥 BORRAR valores guardados
+        localStorage.removeItem('idEstudiante');
+        localStorage.removeItem('cursoId');
   }
 
   cargarSecciones() {

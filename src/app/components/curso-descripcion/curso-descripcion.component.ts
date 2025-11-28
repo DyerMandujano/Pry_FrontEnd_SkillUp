@@ -8,6 +8,7 @@ import { Seccion } from '../../models/seccion.model';
 import { Leccion } from '../../models/leccion.model';
 import { CommonModule } from '@angular/common';
 import { EstudianteService } from '../../services/estudiante.service';
+import { MatriculaService } from '../../services/matricula.service';
  // ← AÑADIR este import
 
 @Component({
@@ -32,17 +33,19 @@ export class CursoDescripcionComponent implements OnInit {
     private cursoService: CursoService,
     private seccionService: SeccionService,
     private leccionService: LeccionService,
-    private estudianteService: EstudianteService
+    private estudianteService: EstudianteService,
+    private matriculaService: MatriculaService
   ) {}
 
   ngOnInit() {
     this.cursoId = +this.route.snapshot.paramMap.get('id')!;
-    
+    //GUARDADO EN EL LOCALSTORAGE
+      localStorage.setItem('cursoId', this.cursoId.toString());
+
     // Obtener ID del estudiante desde los query params
     const idFromParams = this.route.snapshot.queryParamMap.get('estudianteId');
     if (idFromParams) {
       this.idEstudiante = +idFromParams;
-      this.verificarMatriculaReal(); // ← Cambiar a lógica REAL
     }
     
     this.cargarCurso(); // ← Este método SÍ existe ahora
@@ -64,24 +67,41 @@ export class CursoDescripcionComponent implements OnInit {
     });
   }
 
-  // 🔹 LÓGICA REAL - Verificar matrícula
-  verificarMatriculaReal() {
-    this.estudianteService.obtenerCursosMatricula(this.idEstudiante).subscribe({
-      next: (cursosMatriculados) => {
-        // Buscar si este curso está en la lista de matriculados
-        const cursoEncontrado = cursosMatriculados.find(curso => curso.idCurso === this.cursoId);
-        this.estaMatriculado = !!cursoEncontrado;
-      },
-      error: (error) => {
-        console.error('Error verificando matrícula:', error);
-        this.estaMatriculado = false;
-      }
-    });
-  }
+
 
  
-  matricularseTemporal() {
-    console.log(`Matriculando estudiante ${this.idEstudiante} en curso ${this.cursoId}`);}
+
+//NUEVA LOGICA MATRICULA
+
+  registrarMatricula(): void {
+    const idEstudianteLS = localStorage.getItem('idEstudiante');
+    const idCursoLS = localStorage.getItem('cursoId');
+
+    if (!idEstudianteLS || !idCursoLS) {
+      console.error("❌ Error: No se encontró idEstudiante o idCurso en el localStorage");
+      return;
+    }
+
+    const idEstudiante = +idEstudianteLS;
+    const idCurso = +idCursoLS;
+
+    this.matriculaService.insertarMatricula(idEstudiante, idCurso)
+      .subscribe({
+        next: (resp) => {
+          console.log("✅ Matrícula exitosa:", resp);
+          alert("Matrícula registrada con éxito");
+          this.router.navigate([`/curso/${idCurso}/lecciones`]);
+
+        },
+        error: (err) => {
+          console.error("❌ Error al matricular:", err);
+        }
+      });
+  }
+
+
+
+
 
   cargarSecciones() {
     this.seccionService.listarSeccionesPorCurso(this.cursoId).subscribe({

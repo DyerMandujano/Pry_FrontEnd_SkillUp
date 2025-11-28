@@ -75,6 +75,8 @@ export class VisualizarCursosComponent implements OnInit {
       if (id) {
         this.idEstudiante = +id;
         
+        //GUARDADO EN EL LOCALSTORAGE
+        localStorage.setItem('idEstudiante', this.idEstudiante.toString());
         // Carga los cursos en los que SÍ está matriculado
         this.obtenerCursosPorEstudiante(this.idEstudiante);
         
@@ -101,17 +103,18 @@ export class VisualizarCursosComponent implements OnInit {
       error: (err) => {
         console.error('Error al obtener los cursos del estudiante:', err);
       }
-
     });
   }
 
-  // --- ¡¡ESTA ES LA CORRECCIÓN!! ---
-  // Este método debe usar CursoService
   obtenerCursosSinMatricula(id: number): void {
-    // Usamos el método que SÍ existe en tu CursoService
     this.cursoService.listarCursosSinMatriculaporEstu(id).subscribe({
-      next: (data) => { this.cursosNoM = data; },
-      error: (err) => { console.error('Error al obtener cursos NO matriculados:', err); }
+      next: (data) => {
+        this.cursosNoM = data;
+        console.log('Cursos del estudiante:', data);
+      },
+      error: (err) => {
+        console.error('Error al obtener los cursos del estudiante:', err);
+      }
     });
   }
 

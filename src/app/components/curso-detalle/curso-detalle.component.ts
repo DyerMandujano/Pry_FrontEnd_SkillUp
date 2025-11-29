@@ -137,6 +137,29 @@ export class CursoDetalleComponent implements OnInit {
     }
   }
 
+  // Retorna true si la lección actual es la última del curso
+  esUltimaLeccion(): boolean {
+    if (!this.currentLesson || !this.secciones || !this.leccionesPorSeccion) {
+      return false;
+    }
+
+    const ultimaSeccion = this.secciones[this.secciones.length - 1];
+    const leccionesUltimaSeccion = this.leccionesPorSeccion[ultimaSeccion.idSeccion];
+
+    if (!leccionesUltimaSeccion || leccionesUltimaSeccion.length === 0) {
+      return false;
+    }
+
+    const ultimaLeccion = leccionesUltimaSeccion[leccionesUltimaSeccion.length - 1];
+
+    return this.currentLesson.idLeccion === ultimaLeccion.idLeccion;
+}
+
+
+
+
+  //
+
   toggleSection(sectionId: number): void {
     this.expandedSections[sectionId] = !this.expandedSections[sectionId];
   }
@@ -237,5 +260,17 @@ export class CursoDetalleComponent implements OnInit {
     
     return videoMap[leccionId] || 'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
   }
+
+  irAEvaluacion(): void {
+  if (!this.currentSeccion) {
+    console.error("❌ No hay sección actual seleccionada.");
+    return;
+  }
+
+  const idSeccion = this.currentSeccion.idSeccion;
+
+  this.router.navigate(['/evaluacion/seccion', idSeccion]);
+}
+
 
 }

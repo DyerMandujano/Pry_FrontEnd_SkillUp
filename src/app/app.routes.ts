@@ -21,6 +21,7 @@ import { authGuard } from './guards/auth.guard';
 
 // --- ¡IMPORTANTE! Importar el Home ---
 import { HomeComponent } from './components/home/home.component';
+import { EvaluacionCursoComponent } from './components/evaluacion-curso/evaluacion-curso.component';
 
 export const routes: Routes = [
   // 1. CORRECCIÓN: La ruta raíz carga el Home
@@ -97,6 +98,10 @@ export const routes: Routes = [
   {
     path: 'seccion/:id/registrar-leccion',
     component: RegistrarLeccionComponent
+  },
+  {
+    path: 'evaluacion/seccion/:id',
+    component: EvaluacionCursoComponent
   },
 
   // Ruta antigua de estudiante (si aún la usas)

@@ -181,9 +181,23 @@
 
       <!-- Controles de Navegación -->
       <div class="lesson-controls d-flex justify-content-between mt-4">
-        <button class="btn btn-secondary" (click)="anteriorLeccion()">Anterior</button>
-        <button class="btn btn-primary" (click)="siguienteLeccion()">Siguiente Lección</button>
-      </div>
+  <button class="btn btn-secondary" (click)="anteriorLeccion()">Anterior</button>
+
+  <!-- Si NO es la última lección -->
+  @if (!esUltimaLeccion()) {
+    <button class="btn btn-primary" (click)="siguienteLeccion()">
+      Siguiente Lección
+    </button>
+  }
+
+  <!-- Si ES la última lección -->
+  @if (esUltimaLeccion()) {
+    <button class="btn btn-success" (click)="irAEvaluacion()">
+      Dar Cuestionario
+    </button>
+  }
+
+</div>
     </main>
   </div>
 </div>

@@ -18,7 +18,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-estudiante',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink], 
+  imports: [CommonModule, FormsModule], 
   templateUrl: './estudiante.component.html',
   styleUrls: ['./estudiante.component.css']
 })
@@ -69,6 +69,17 @@ export class EstudianteComponent implements OnInit {
       }
     }
   }
+  
+      irAMisCertificados(): void {
+  const idEstudiante = Number(localStorage.getItem('idEstudiante'));
+
+  if (!idEstudiante) {
+    console.error("No existe idEstudiante en el localStorage");
+    return;
+  }
+
+  this.router.navigate(['/certificados/estudiante', idEstudiante]);
+}
 
   loadProfileData(idPersona: number): void {
     this.usuarioService.obtenerPerfil(idPersona).subscribe(

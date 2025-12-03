@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CursoService } from '../../services/curso.service';
 import { SeccionService } from '../../services/seccion.service';
@@ -23,6 +23,7 @@ export class CursoDetalleComponent implements OnInit {
   cursoId!: number;
   cargando: boolean = true;
   error: string = '';
+  isBrowser: boolean; // Variable para saber si estamos en el navegador
   
   // Estado para acordeones y progreso
   expandedSections: { [key: number]: boolean } = {};
@@ -34,11 +35,21 @@ export class CursoDetalleComponent implements OnInit {
     private router: Router,
     private cursoService: CursoService,
     private seccionService: SeccionService,
-    private leccionService: LeccionService
-  ) {}
+    private leccionService: LeccionService,
+    @Inject(PLATFORM_ID) private platformId: Object // Inyectamos el ID de la plataforma
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId); // Verificamos si es navegador
+  }
 
   ngOnInit() {
     this.cursoId = +this.route.snapshot.paramMap.get('id')!;
+    
+    // ✅ CORRECCIÓN: Solo accedemos a localStorage si estamos en el navegador (isBrowser)
+    if (this.isBrowser && this.cursoId) {
+      localStorage.setItem('cursoId', this.cursoId.toString());
+      console.log('💾 Curso ID guardado en localStorage:', this.cursoId);
+    }
+
     this.cargarCurso();
   }
 
@@ -57,7 +68,10 @@ export class CursoDetalleComponent implements OnInit {
     });
   }
 
-    regresarCursos(): void {
+  regresarCursos(): void {
+    // Si no estamos en el navegador, no hacemos nada con localStorage
+    if (!this.isBrowser) return;
+
     const idEstudianteLS = localStorage.getItem('idEstudiante');
 
     if (!idEstudianteLS) {
@@ -67,11 +81,11 @@ export class CursoDetalleComponent implements OnInit {
 
     const idEstudiante = +idEstudianteLS;
 
+    // 🔥 BORRAR valores guardados al salir
+    localStorage.removeItem('cursoId');
+    
     // Redirige a visualizar-cursos/:id
     this.router.navigate([`/visualizar-cursos/${idEstudiante}`]);
-    // 🔥 BORRAR valores guardados
-        localStorage.removeItem('idEstudiante');
-        localStorage.removeItem('cursoId');
   }
 
   cargarSecciones() {

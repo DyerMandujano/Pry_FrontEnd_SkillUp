@@ -21,4 +21,8 @@ export class CertificadoService {
     // Usamos POST para que el backend genere y guarde el certificado si no existe
     return this.http.post<Certificado>(`${this.apiUrl}/generar`, null, { params });
   }
+  listarCertificadosPorEstudiante(idEstudiante: number): Observable<any[]> {
+    // Asegúrate de que esta ruta coincida con tu Backend
+    return this.http.get<any[]>(`${this.apiUrl}/estudiante/${idEstudiante}`);
+  }
 }

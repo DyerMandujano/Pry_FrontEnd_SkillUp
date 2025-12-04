@@ -1,72 +1,51 @@
-<div class="container">
- <div class="position-relative text-center mb-3">
-  <h1 class="mb-0">Mis Certificados</h1>
-  <button class="btn btn-outline-primary 
-          position-absolute end-0 top-50 translate-middle-y" (click)="volverACursos()"> 
-    Volver a Cursos
-  </button>
+<div class="container mt-5">
+  <h2 class="text-center mb-4" style="color: #0a192f; font-weight: bold;">
+    🎓 Mis Certificados y Logros
+  </h2>
 
-</div>
-
-  <p class="text-center text-muted mb-5">
-    Aquí puedes visualizar todas las certificaciones obtenidas en tus cursos virtuales completados.
-  </p>
-
-   <!-- LOADER MIENTRAS CARGA -->
-  <div *ngIf="isLoading" class="text-center my-5">
-    <div class="spinner-border text-primary"></div>
-    <p class="text-muted mt-3">Cargando certificados...</p>
+  <div *ngIf="loading" class="text-center p-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
   </div>
 
-  <div *ngIf="!isLoading">
-
-    <!-- SIN CERTIFICADOS -->
-    <div *ngIf="certificados.length === 0" class="text-center my-5">
-      <h4 class="text-muted">Estimado alumno, aún no cuenta con certificados.</h4>
-
-      <img 
-        src="img/certificado/closet.png" 
-        alt="Sin certificados"
-        class="img-fluid mx-auto d-block" 
-        style="max-width: 500px;"
-      >
-    </div>
-
-  <div class="row g-4" *ngIf="certificados.length > 0">
-
-    <!-- 🔄 Recorrer los certificados -->
-    <div class="col-md-6 col-lg-4" *ngFor="let cert of certificados">
-      <div class="card card-cert shadow-sm">
-
-        <!-- Imagen del certificado -->
-        <img src="img/certificado/carpc.png"
-             class="card-img-top"
-             alt="Imagen Certificado">
-
-        <div class="card-body">
-          <h5 class="card-title">{{ cert.nombreCurso }}</h5>
-
-          <p class="card-text text-muted">
-            Completado:
-            <strong>{{ cert.fechaEmision | date:'dd/MM/yyyy' }}</strong>
-          </p>
-
-          <p class="card-text small">
-            Duración: {{ cert.duracionMin }} min
-          </p>
-
-          <p class="card-text small text-muted">
-            Código: <strong>{{ cert.codigoCertificado }}</strong>
-          </p>
-
-          <a href="#" class="btn btn-primary btn-sm">Ver Certificado</a>
-        </div>
-      </div>
-    </div>
-
+  <div *ngIf="!loading && certificados.length === 0" class="alert alert-info text-center">
+    Aún no tienes certificados. ¡Completa tus cursos para obtenerlos!
   </div>
 
-  <footer class="text-center mt-5 mb-3 text-muted small">
-    Plataforma de Cursos SkillUP © 2025
-  </footer>
+  <div *ngIf="!loading && certificados.length > 0" class="card shadow-sm">
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th class="py-3 ps-4">Curso</th>
+            <th class="py-3">Fecha de Emisión</th>
+            <th class="py-3">Código</th>
+            <th class="py-3 text-end pe-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cert of certificados">
+            <td class="ps-4 align-middle fw-bold text-primary">
+              {{ cert.nombreCurso || cert.curso?.nombre || 'Curso SkillUp' }}
+            </td>
+            
+            <td class="align-middle">
+              {{ cert.fechaEmision | date:'dd/MM/yyyy' }}
+            </td>
+            
+            <td class="align-middle">
+              <span class="badge bg-secondary">{{ cert.codigoCertificado }}</span>
+            </td>
+            
+            <td class="text-end pe-4">
+              <button class="btn btn-warning btn-sm text-white" (click)="descargarCertificado(cert)">
+                <i class="fas fa-download me-1"></i> Descargar PDF
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

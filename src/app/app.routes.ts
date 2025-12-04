@@ -100,14 +100,15 @@ export const routes: Routes = [
     path: 'seccion/:id/registrar-leccion',
     component: RegistrarLeccionComponent
   },
-  {
-    path: 'evaluacion/seccion/:id',
-    component: EvaluacionCursoComponent
-  },
+  //{
+    //path: 'evaluacion/seccion/:id',
+    //component: EvaluacionCursoComponent
+  //},
   {
     path: 'certificados/estudiante/:id',
     component: MisCertificadosComponent
   },
+
 
   // Ruta antigua de estudiante (si aún la usas)
   {
@@ -116,9 +117,20 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
+    //nuevo
+
+  {
+    path: 'curso/:id/evaluacion/:idSeccion',
+    component: EvaluacionCursoComponent,
+    canActivate: [authGuard]
+  },
+
   // 2. CORRECCIÓN: Ruta comodín redirige a Home ('') en lugar de Login
   {
     path: '**',
     redirectTo: ''
-  }
+  },
+
+
+
 ];

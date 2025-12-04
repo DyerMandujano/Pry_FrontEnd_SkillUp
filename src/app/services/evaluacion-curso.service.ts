@@ -1,26 +1,38 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EvaluacionCurso } from '../models/evaluacionCurso';
 import { Evaluacion } from '../models/evaluacion';
+import { ResultadoVerificacion } from '../models/resultado-verificacion.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvaluacionCursoService {
 
-  private apiUrl = 'http://localhost:8888/api/evaluacion';
-  private apiUrl2 = 'http://localhost:8888/api/evaluaciones';
+  private baseUrl = 'http://localhost:8888/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Obtener la evaluación de una sección
   listarEvaluacion(idSeccion: number): Observable<EvaluacionCurso[]> {
-    return this.http.get<EvaluacionCurso[]>(`${this.apiUrl}/seccion/${idSeccion}`);
+    return this.http.get<EvaluacionCurso[]>(`${this.baseUrl}/evaluacion/seccion/${idSeccion}`);
   }
 
   listarTituloEvaluacion(idSeccion: number): Observable<Evaluacion[]> {
-    return this.http.get<Evaluacion[]>(`${this.apiUrl2}/seccion/${idSeccion}`);
+    return this.http.get<Evaluacion[]>(`${this.baseUrl}/evaluaciones/seccion/${idSeccion}`);
   }
 
+  //nuevo
+guardarRespuestasBatch(respuestas: any[]): Observable<string> {
+  return this.http.post(`${this.baseUrl}/respuestas/batch`, respuestas, {
+    responseType: 'text'
+  });
+}
+
+
+  verificarAprobacion(idEstudiante: number, idEvaluacion: number): Observable<ResultadoVerificacion> {
+    return this.http.get<ResultadoVerificacion>(
+      `${this.baseUrl}/evaluaciones/verificar/${idEstudiante}/${idEvaluacion}`
+    );
+  }
 }

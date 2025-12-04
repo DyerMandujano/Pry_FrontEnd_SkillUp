@@ -261,16 +261,28 @@ export class CursoDetalleComponent implements OnInit {
     return videoMap[leccionId] || 'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
   }
 
-  irAEvaluacion(): void {
+irAEvaluacion(): void {
   if (!this.currentSeccion) {
     console.error("❌ No hay sección actual seleccionada.");
     return;
   }
 
   const idSeccion = this.currentSeccion.idSeccion;
+  const idEstudiante = localStorage.getItem('idEstudiante');
 
-  this.router.navigate(['/evaluacion/seccion', idSeccion]);
+  if (!idEstudiante) {
+    console.error('❌ No se encontró idEstudiante en localStorage');
+    return;
+  }
+
+  this.router.navigate(
+    ['/curso', this.cursoId, 'evaluacion', idSeccion],
+    { queryParams: { idEstudiante: idEstudiante } }
+  );
 }
+
+
+
 
 
 }

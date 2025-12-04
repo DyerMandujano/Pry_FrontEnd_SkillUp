@@ -1,90 +1,131 @@
 <div class="container-quiz">
 
-    <!-- TÍTULO DE LA EVALUACIÓN -->
-    <h1>📋 {{ evaluacion[0]?.titulo }}</h1>
-    <p class="subtitle">
-        Evaluación del Curso - Sección: {{ evaluacion[0]?.idSeccion }}
-    </p>
+  <!-- TÍTULO DE LA EVALUACIÓN -->
+<h1>📋 {{ evaluacion[0] ? evaluacion[0].titulo : '' }}</h1>
+<p class="subtitle">
+  Evaluación del Curso - Sección: {{ evaluacion[0] ? evaluacion[0].idSeccion : '' }}
+</p>
 
-    <div class="progress-info">
-        <small>{{ evaluaciones.length }} preguntas para evaluar tu conocimiento</small>
+
+  <div class="progress-info">
+    <small>{{ evaluaciones.length }} preguntas para evaluar tu conocimiento</small>
+  </div>
+
+  <form>
+
+    <!-- LISTADO DE PREGUNTAS DINÁMICAS -->
+    <div *ngFor="let item of evaluaciones; let i = index" class="pregunta">
+
+      <!-- ENCABEZADO DE LA PREGUNTA -->
+      <div class="pregunta-titulo">
+        <span class="numero-pregunta">{{ i + 1 }}</span>
+        {{ item.enunciado }}
+      </div>
+
+      <!-- OPCIÓN 1 -->
+      <div class="form-check" *ngIf="item.opcion1">
+        <input 
+          class="form-check-input"
+          type="radio"
+          [name]="'q' + item.idPregunta"
+          [id]="'p' + item.idPregunta + '_o1'"
+          [value]="item.idOp1"
+          (change)="seleccionarRespuesta(item.idPregunta, item.idOp1)"
+          [checked]="isOpcionSeleccionada(item.idPregunta, item.idOp1)"
+        >
+        <label 
+          class="form-check-label"
+          [for]="'p' + item.idPregunta + '_o1'"
+        >
+          {{ item.opcion1 }}
+        </label>
+      </div>
+
+      <!-- OPCIÓN 2 -->
+      <div class="form-check" *ngIf="item.opcion2">
+        <input 
+          class="form-check-input"
+          type="radio"
+          [name]="'q' + item.idPregunta"
+          [id]="'p' + item.idPregunta + '_o2'"
+          [value]="item.idOp2"
+          (change)="seleccionarRespuesta(item.idPregunta, item.idOp2)"
+          [checked]="isOpcionSeleccionada(item.idPregunta, item.idOp2)"
+        >
+        <label 
+          class="form-check-label"
+          [for]="'p' + item.idPregunta + '_o2'"
+        >
+          {{ item.opcion2 }}
+        </label>
+      </div>
+
+      <!-- OPCIÓN 3 -->
+      <div class="form-check" *ngIf="item.opcion3">
+        <input 
+          class="form-check-input"
+          type="radio"
+          [name]="'q' + item.idPregunta"
+          [id]="'p' + item.idPregunta + '_o3'"
+          [value]="item.idOp3"
+          (change)="seleccionarRespuesta(item.idPregunta, item.idOp3)"
+          [checked]="isOpcionSeleccionada(item.idPregunta, item.idOp3)"
+        >
+        <label 
+          class="form-check-label"
+          [for]="'p' + item.idPregunta + '_o3'"
+        >
+          {{ item.opcion3 }}
+        </label>
+      </div>
+
     </div>
 
-    <form>
+    <!-- BOTONES -->
+    <div class="btn-group-actions mt-3">
+      <button
+        type="button"
+        class="btn-enviar"
+        (click)="enviarEvaluacion()"
+        [disabled]="enviando"
+      >
+        {{ enviando ? 'Enviando...' : 'Enviar Respuestas' }}
+      </button>
 
-        <!-- LISTADO DE PREGUNTAS DINÁMICAS -->
-        <div *ngFor="let item of evaluaciones; let i = index" class="pregunta">
+      <button
+        type="reset"
+        class="btn-limpiar"
+        (click)="respuestasUsuario = []"
+      >
+        Limpiar
+      </button>
+    </div>
 
-            <!-- ENCABEZADO DE LA PREGUNTA -->
-            <div class="pregunta-titulo">
-                <span class="numero-pregunta">{{ i + 1 }}</span>
-                {{ item.enunciado }}
-            </div>
+  </form>
 
-            <!-- OPCIÓN 1 -->
-            <div class="form-check">
-                <input 
-                    class="form-check-input"
-                    type="radio"
-                    [name]="'q' + item.idPregunta"
-                    [id]="'p' + item.idPregunta + '_o1'"
-                    [value]="item.idOp1"
-                >
-                <label 
-                    class="form-check-label"
-                    [for]="'p' + item.idPregunta + '_o1'"
-                >
-                    {{ item.opcion1 }}
-                </label>
-            </div>
+  <!-- RESULTADO DE LA EVALUACIÓN -->
+  <div *ngIf="mostrarResultado" class="resultado-container mt-3">
+    <h3 [class.text-success]="aprobado" [class.text-danger]="!aprobado">
+      {{ aprobado ? '🎉 ¡Aprobado!' : '❌ No Aprobado' }}
+    </h3>
 
-            <!-- OPCIÓN 2 -->
-            <div class="form-check">
-                <input 
-                    class="form-check-input"
-                    type="radio"
-                    [name]="'q' + item.idPregunta"
-                    [id]="'p' + item.idPregunta + '_o2'"
-                    [value]="item.idOp2"
-                >
-                <label 
-                    class="form-check-label"
-                    [for]="'p' + item.idPregunta + '_o2'"
-                >
-                    {{ item.opcion2 }}
-                </label>
-            </div>
+    <p>
+      Correctas: {{ resultado?.correctas }} /
+      {{ resultado?.totalPreguntas }}
+    </p>
 
-            <!-- OPCIÓN 3 -->
-            <div class="form-check">
-                <input 
-                    class="form-check-input"
-                    type="radio"
-                    [name]="'q' + item.idPregunta"
-                    [id]="'p' + item.idPregunta + '_o3'"
-                    [value]="item.idOp3"
-                >
-                <label 
-                    class="form-check-label"
-                    [for]="'p' + item.idPregunta + '_o3'"
-                >
-                    {{ item.opcion3 }}
-                </label>
-            </div>
-
-        </div>
-
-        <!-- BOTONES -->
-        <div class="btn-group-actions">
-            <button type="button" class="btn-enviar">
-                Enviar Respuestas
-            </button>
-
-            <button type="reset" class="btn-limpiar">
-                Limpiar
-            </button>
-        </div>
-
-    </form>
+    <div class="mt-3">
+      <button class="btn btn-primary" (click)="volverACursos()">
+        Volver al Curso
+      </button>
+      <button
+        *ngIf="aprobado"
+        class="btn btn-success ms-2"
+        (click)="descargarCertificado()"
+      >
+        Descargar Certificado
+      </button>
+    </div>
+  </div>
 
 </div>

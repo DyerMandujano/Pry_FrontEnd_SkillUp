@@ -73,5 +73,22 @@ export class RegistrarCursoComponent implements OnInit{
     });
   }
 
+onFileSelected(event: any, tipo: number) {
+  const file: File = event.target.files[0];
+
+  if (!file) return;
+
+  const fileName = file.name; // ej: "carpinteria.png"
+
+  if (tipo === 1) {
+    this.nuevoCurso.imagenCurso1 = fileName;
+  } else {
+    this.nuevoCurso.imagenCurso2 = fileName;
+  }
+
+  console.log("Imagen seleccionada:", fileName);
+}
+
+
   
 }

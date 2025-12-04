@@ -10,6 +10,10 @@ import { UsuarioService } from '../../services/usuario.service';
 import { LoginResponse } from '../../models/login-response.model';
 import { Persona } from '../../models/persona.model';
 import { FormsModule } from '@angular/forms'; // Asegúrate de importar FormsModule
+import { ExportExcelService } from '../../services/export-excel.service';
+import { CertificadoCursoService } from '../../services/certificado-curso.service';
+import { CertificadoDocente } from '../../models/certificadoDocente';
+
 
 // 2. --- ACTUALIZAR METADATOS DEL COMPONENTE ---
 @Component({
@@ -24,6 +28,7 @@ export class DocenteComponent implements OnInit {
     idDocente!: number;
     cursos: Curso[] = [];
     nombreDelDocente: string = '';
+    certificados: CertificadoDocente[] = [];
 
     // 3. --- PROPIEDADES NUEVAS (COPIADAS DE ESTUDIANTE) ---
     currentUser: LoginResponse | null = null;
@@ -40,6 +45,8 @@ export class DocenteComponent implements OnInit {
     // 4. --- INYECTAR NUEVOS SERVICIOS ---
     private authService: AuthService,
     private usuarioService: UsuarioService,
+    private excelService: ExportExcelService,
+    private certificadoService: CertificadoCursoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -66,6 +73,8 @@ export class DocenteComponent implements OnInit {
       this.cursoService.listarCursosPorDocente(this.idDocente)
           .subscribe(data => (this.cursos = data));
     }
+    this.certificadoService.listarCertificadosPorDocente(this.idDocente)
+      .subscribe(data => this.certificados = data);
 
     // 6. --- INICIALIZAR EL MODAL (COPIADO DE ESTUDIANTE) ---
     if (isPlatformBrowser(this.platformId)) {
@@ -151,6 +160,10 @@ export class DocenteComponent implements OnInit {
     this.router.navigate(['/seccion/curso', idCurso]);
   }
   
+  exportarExcel() {
+    this.excelService.exportAsExcelFile(this.certificados, 'Certificados_Docente');
+  }
+
   eliminarCurso(idCurso: number): void {
     if (confirm('¿Estás seguro de eliminar este curso?')) {
       this.cursoService.eliminarCurso(idCurso).subscribe({

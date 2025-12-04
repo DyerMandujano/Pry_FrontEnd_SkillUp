@@ -33,9 +33,9 @@
               <h2><strong>Crear Nuevo Curso</strong></h2>
             </div>
             <div class="card-body">
-                <div class="text-center">
-        <img src="img/curso/curso.png" width="200" height="200" class="img-fluid" alt="Imagen del curso">
-      </div>
+                <div class="d-flex justify-content-center mb-3">
+                  <img src="img/curso/curso.png" width="200" height="200" class="img-fluid" alt="Imagen del curso">
+                </div>
               <form class="row g-3" (ngSubmit)="registrarCurso()" #formCurso="ngForm">
 
   <!-- ID del docente (solo lectura) 
@@ -102,6 +102,43 @@
               rows="2" placeholder="Breve resumen del curso..." required></textarea>
   </div>
 
+<div class="col-md-12">
+  <label class="form-label fw-semibold">Imágenes del Curso</label>
+
+  <div class="d-flex gap-2">
+
+    <!-- Imagen Principal -->
+    <div class="flex-fill">
+      <input 
+        class="form-control"
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event, 1)"
+        required>
+      
+      <small *ngIf="nuevoCurso.imagenCurso1" class="text-success">
+        Imagen principal: <strong>{{ nuevoCurso.imagenCurso1 }}</strong>
+      </small>
+    </div>
+
+    <!-- Imagen Secundaria -->
+    <div class="flex-fill">
+      <input 
+        class="form-control"
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event, 2)">
+      
+      <small *ngIf="nuevoCurso.imagenCurso2" class="text-success">
+        Imagen secundaria: <strong>{{ nuevoCurso.imagenCurso2 }}</strong>
+      </small>
+    </div>
+
+  </div>
+</div>
+
+
+  <!--  
   <div class="col-md-12">
     <label class="form-label fw-semibold">Imágenes del Curso</label>
     <div class="d-flex gap-2">
@@ -115,7 +152,7 @@
              [(ngModel)]="nuevoCurso.imagenCurso2"
              placeholder="Ruta o URL de la imagen secundaria">
     </div>
-  </div>
+  </div>-->
 
   <div class="col-12 d-flex justify-content-end gap-3 mt-3">
     <button type="submit" class="btn btn-success px-4">Guardar Curso</button>

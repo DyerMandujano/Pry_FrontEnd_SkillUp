@@ -1,0 +1,72 @@
+<div class="container">
+ <div class="position-relative text-center mb-3">
+  <h1 class="mb-0">Mis Certificados</h1>
+  <button class="btn btn-outline-primary 
+          position-absolute end-0 top-50 translate-middle-y" (click)="volverACursos()"> 
+    Volver a Cursos
+  </button>
+
+</div>
+
+  <p class="text-center text-muted mb-5">
+    Aquí puedes visualizar todas las certificaciones obtenidas en tus cursos virtuales completados.
+  </p>
+
+   <!-- LOADER MIENTRAS CARGA -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="text-muted mt-3">Cargando certificados...</p>
+  </div>
+
+  <div *ngIf="!isLoading">
+
+    <!-- SIN CERTIFICADOS -->
+    <div *ngIf="certificados.length === 0" class="text-center my-5">
+      <h4 class="text-muted">Estimado alumno, aún no cuenta con certificados.</h4>
+
+      <img 
+        src="img/certificado/closet.png" 
+        alt="Sin certificados"
+        class="img-fluid mx-auto d-block" 
+        style="max-width: 500px;"
+      >
+    </div>
+
+  <div class="row g-4" *ngIf="certificados.length > 0">
+
+    <!-- 🔄 Recorrer los certificados -->
+    <div class="col-md-6 col-lg-4" *ngFor="let cert of certificados">
+      <div class="card card-cert shadow-sm">
+
+        <!-- Imagen del certificado -->
+        <img src="img/certificado/carpc.png"
+             class="card-img-top"
+             alt="Imagen Certificado">
+
+        <div class="card-body">
+          <h5 class="card-title">{{ cert.nombreCurso }}</h5>
+
+          <p class="card-text text-muted">
+            Completado:
+            <strong>{{ cert.fechaEmision | date:'dd/MM/yyyy' }}</strong>
+          </p>
+
+          <p class="card-text small">
+            Duración: {{ cert.duracionMin }} min
+          </p>
+
+          <p class="card-text small text-muted">
+            Código: <strong>{{ cert.codigoCertificado }}</strong>
+          </p>
+
+          <a href="#" class="btn btn-primary btn-sm">Ver Certificado</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="text-center mt-5 mb-3 text-muted small">
+    Plataforma de Cursos SkillUP © 2025
+  </footer>
+</div>

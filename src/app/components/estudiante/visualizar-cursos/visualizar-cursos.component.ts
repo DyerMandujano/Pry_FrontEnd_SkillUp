@@ -118,6 +118,18 @@ export class VisualizarCursosComponent implements OnInit {
     });
   }
 
+
+    irAMisCertificados(): void {
+  const idEstudiante = Number(localStorage.getItem('idEstudiante'));
+
+  if (!idEstudiante) {
+    console.error("No existe idEstudiante en el localStorage");
+    return;
+  }
+
+  this.router.navigate(['/certificados/estudiante', idEstudiante]);
+}
+
   // --- Métodos para el Perfil (traídos de estudiante.component.ts) ---
 
   loadProfileData(idPersona: number): void {
